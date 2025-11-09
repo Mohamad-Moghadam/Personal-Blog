@@ -3,24 +3,8 @@ import Image from "next/image";
 export default function AboutPage() {
 	return (
 		<div className="flex flex-col md:flex-row-reverse min-h-screen items-start justify-center bg-zinc-50 dark:bg-black font-sans p-8 md:space-x-12 md:space-x-reverse">
-			{/* بخش تصویر */}
-			<section className="flex-shrink-0 mb-8 md:mb-0 md:w-1/3 flex justify-center relative">
-				<div className="relative w-[280px] h-[280px] md:w-[320px] md:h-[320px]">
-					{/* حلقه گرادیانت پشت تصویر */}
-					<div className="absolute inset-0 bg-gradient-to-tr from-blue-500 via-green-400 to-purple-500 rounded-full blur-md opacity-70 animate-pulse"></div>
-					<Image
-						src="/1000109887.jpg"
-						alt="Profile Image"
-						width={320}
-						height={320}
-						className="rounded-full object-cover shadow-2xl relative z-10 border-4 border-white dark:border-zinc-900"
-					/>
-				</div>
-			</section>
 
-			{/* بخش اصلی محتوا */}
 			<main className="max-w-3xl w-full md:w-2/3 space-y-8">
-				{/* درباره من */}
 				<section className="bg-blue-100 dark:bg-blue-900 p-6 rounded-lg shadow">
 					<h1 className="text-3xl font-bold mb-4">About Me</h1>
 					<p className="text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-line">
