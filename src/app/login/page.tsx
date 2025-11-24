@@ -23,7 +23,7 @@ export default function Login() {
 
 	const onSubmit = async (data: LoginForm) => {
 		try {
-			const res = await fetch(`${BASE_URL}/Subscribers/token`, {
+			const res = await fetch(`/Subscribers/token`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify(data),
