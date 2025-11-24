@@ -1,67 +1,49 @@
 "use client";
 
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
+type LoginForm = {
+	username: string;
+	password: string;
+};
+
 export default function Login() {
 	const router = useRouter();
-
 	const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
-	const [form, setForm] = useState({
-		username: "",
-		password: "",
-	});
+	const {
+		register,
+		handleSubmit,
+		reset,
+		formState: { errors },
+	} = useForm<LoginForm>();
 
-	const handleChange = (e) => {
-		setForm({
-			...form,
-			[e.target.name]: e.target.value,
-		});
-	};
-
-	const handleSubmit = async (e) => {
-		e.preventDefault();
-
+	const onSubmit = async (data: LoginForm) => {
 		try {
 			const res = await fetch(`${BASE_URL}/Subscribers/token`, {
 				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(form),
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(data),
 			});
-
 			if (!res.ok) {
-				toast.error("Username or password is incorrect");
+				toast.error("Invalid username or password");
 				return;
 			}
-
-			const data = await res.json();
-
-			// فرض می‌کنیم API این را برمی‌گرداند:
-			// { "access_token": "xxxxx" }
-			const token = data.access_token;
-
+			const json = await res.json();
+			const token = json.access_token;
 			if (!token) {
-				toast.error("Token not received!");
+				toast.error("Token not received");
 				return;
 			}
-
-			// ذخیره توکن
 			localStorage.setItem("token", token);
-
-			toast.success("Logged in successfully!");
-
-			// هدایت به داشبورد
-			setTimeout(() => {
-				router.push("/dashboard");
-			}, 1000);
-		} catch (err) {
-			console.error(err);
-			toast.error("Connection error!");
+			toast.success("Logged in successfully");
+			reset();
+			setTimeout(() => router.push("/dashboard"), 1000);
+		} catch {
+			toast.error("Connection error");
 		}
 	};
 
@@ -71,32 +53,18 @@ export default function Login() {
 				<h1 className="text-3xl font-bold text-center mb-6 text-green-700">
 					Login
 				</h1>
-
-				<form onSubmit={handleSubmit} className="space-y-4">
-					<div>
-						<label className="text-sm font-medium block mb-1">Username</label>
-						<input
-							type="text"
-							name="username"
-							value={form.username}
-							onChange={handleChange}
-							placeholder="Enter username"
-							className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-						/>
-					</div>
-
-					<div>
-						<label className="text-sm font-medium block mb-1">Password</label>
-						<input
-							type="password"
-							name="password"
-							value={form.password}
-							onChange={handleChange}
-							placeholder="Enter password"
-							className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-						/>
-					</div>
-
+				<form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+					<input
+						{...register("username", { required: true })}
+						placeholder="Username"
+						className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+					/>
+					<input
+						{...register("password", { required: true })}
+						type="password"
+						placeholder="Password"
+						className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+					/>
 					<button
 						type="submit"
 						className="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition"
@@ -104,7 +72,6 @@ export default function Login() {
 						Login
 					</button>
 				</form>
-
 				<p className="text-center text-sm mt-4">
 					Don’t have an account?{" "}
 					<Link
