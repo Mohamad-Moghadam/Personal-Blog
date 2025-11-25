@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Post } from "../types/Post";
+import toast from "react-hot-toast";
 
 interface Props {
 	token: string;
@@ -11,10 +12,12 @@ interface Props {
 export default function CreatePostForm({ token, onCreate }: Props) {
 	const [title, setTitle] = useState("");
 	const [excerpt, setExcerpt] = useState("");
+	const [loading, setLoading] = useState(false);
 	const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
+		setLoading(true);
 		try {
 			const res = await fetch(`${BASE_URL}/Blog/create/`, {
 				method: "POST",
@@ -24,14 +27,19 @@ export default function CreatePostForm({ token, onCreate }: Props) {
 				},
 				body: JSON.stringify({ title, excerpt }),
 			});
+
 			if (!res.ok) throw new Error("Failed to create post");
+
 			const newPost: Post = await res.json();
 			onCreate(newPost);
 			setTitle("");
 			setExcerpt("");
+			toast.success("Post created successfully!");
 		} catch (err) {
 			console.error(err);
-			alert("Error creating post");
+			toast.error("Error creating post!");
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -43,6 +51,7 @@ export default function CreatePostForm({ token, onCreate }: Props) {
 				value={title}
 				onChange={(e) => setTitle(e.target.value)}
 				required
+				disabled={loading}
 			/>
 
 			<textarea
@@ -51,10 +60,14 @@ export default function CreatePostForm({ token, onCreate }: Props) {
 				value={excerpt}
 				onChange={(e) => setExcerpt(e.target.value)}
 				required
+				disabled={loading}
 			/>
 
-			<button className="px-4 py-2 bg-blue-600 text-white rounded">
-				Create Post
+			<button
+				className="px-4 py-2 bg-blue-600 text-white rounded"
+				disabled={loading}
+			>
+				{loading ? "Creating..." : "Create Post"}
 			</button>
 		</form>
 	);
