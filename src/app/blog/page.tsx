@@ -4,11 +4,12 @@ import Link from "next/link";
 export default function BlogPage() {
 	const [posts, setPosts] = useState([]);
 	const [loading, setLoading] = useState(true);
+	const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 	useEffect(() => {
 		const fetchPosts = async () => {
 			try {
-				const res = await fetch("https://api.msoodmandm.ir/Blog/list/");
+				const res = await fetch(`${BASE_URL}/Blog/list/`);
 				if (!res.ok) throw new Error("Failed to fetch posts");
 				const data = await res.json();
 				setPosts(data); // assumes the API returns a list of posts
