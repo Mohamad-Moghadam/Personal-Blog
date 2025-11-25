@@ -10,14 +10,17 @@ interface Post {
 	excerpt: string;
 }
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+
+// ---------------- DashboardSidebar ----------------
 function DashboardSidebar({ token }: { token: string }) {
 	const [userPosts, setUserPosts] = useState<Post[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [showForm, setShowForm] = useState(false);
 	const [title, setTitle] = useState("");
 	const [excerpt, setExcerpt] = useState("");
-	const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
+	// Fetch user posts
 	useEffect(() => {
 		const fetchUserPosts = async () => {
 			try {
@@ -27,7 +30,8 @@ function DashboardSidebar({ token }: { token: string }) {
 				if (!res.ok) throw new Error("Failed to fetch user posts");
 				const data: Post[] = await res.json();
 				setUserPosts(data);
-			} catch {
+			} catch (err) {
+				console.error(err);
 				setUserPosts([]);
 			} finally {
 				setLoading(false);
@@ -36,6 +40,7 @@ function DashboardSidebar({ token }: { token: string }) {
 		fetchUserPosts();
 	}, [token]);
 
+	// Create new post
 	const createPost = async (e: React.FormEvent) => {
 		e.preventDefault();
 		try {
@@ -59,9 +64,26 @@ function DashboardSidebar({ token }: { token: string }) {
 		}
 	};
 
+	// Delete post
+	const deletePost = async (id: number) => {
+		if (!confirm("Are you sure you want to delete this post?")) return;
+		try {
+			const res = await fetch(`${BASE_URL}/Blog/${id}/delete/`, {
+				method: "DELETE",
+				headers: { Authorization: `Bearer ${token}` },
+			});
+			if (!res.ok) throw new Error("Failed to delete post");
+			setUserPosts(userPosts.filter((post) => post.id !== id));
+		} catch (err) {
+			alert("Error deleting post");
+			console.error(err);
+		}
+	};
+
 	return (
 		<div className="w-80 p-6 bg-gray-100 dark:bg-zinc-900 rounded-xl">
 			<h2 className="text-xl font-bold mb-4">My Dashboard</h2>
+
 			<button
 				className="w-full mb-4 p-2 bg-blue-600 text-white rounded"
 				onClick={() => setShowForm(!showForm)}
@@ -103,14 +125,19 @@ function DashboardSidebar({ token }: { token: string }) {
 			) : (
 				<ul className="space-y-2">
 					{userPosts.map((post) => (
-						<li key={post.id}>
+						<li key={post.id} className="flex justify-between items-center">
 							<Link
 								href={`/blog/${post.id}`}
 								className="text-blue-600 dark:text-blue-400 hover:underline"
 							>
 								{post.title}
 							</Link>
-							<button className="ml-2 text-red-500">Delete</button>
+							<button
+								onClick={() => deletePost(post.id)}
+								className="text-red-500"
+							>
+								Delete
+							</button>
 						</li>
 					))}
 				</ul>
@@ -119,10 +146,10 @@ function DashboardSidebar({ token }: { token: string }) {
 	);
 }
 
+// ---------------- BlogList ----------------
 function BlogList() {
 	const [posts, setPosts] = useState<Post[]>([]);
 	const [loading, setLoading] = useState(true);
-	const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 	useEffect(() => {
 		const fetchPosts = async () => {
@@ -131,7 +158,8 @@ function BlogList() {
 				if (!res.ok) throw new Error("Failed to fetch posts");
 				const data: Post[] = await res.json();
 				setPosts(data);
-			} catch {
+			} catch (err) {
+				console.error(err);
 				setPosts([]);
 			} finally {
 				setLoading(false);
@@ -177,11 +205,14 @@ function BlogList() {
 	);
 }
 
+// ---------------- BlogPage ----------------
 export default function BlogPage() {
-	let token: string | null = null;
-	if (typeof window !== "undefined") {
-		token = localStorage.getItem("access_token");
-	}
+	const [token, setToken] = useState<string | null>(null);
+
+	useEffect(() => {
+		const t = localStorage.getItem("access_token");
+		setToken(t);
+	}, []);
 
 	return (
 		<div className="flex min-h-screen gap-6 px-6 py-12">
