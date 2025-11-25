@@ -14,10 +14,10 @@ export default function BlogList({ posts }: { posts: Post[] }) {
 					</p>
 					<p className="mt-2 text-gray-700">{post.content.slice(0, 100)}...</p>
 					<Link
-						href={`/blog/${post.id}`}
-						className="text-blue-500 mt-2 inline-block"
+						href={`/blog/detail/${post.id}`}
+						className="text-blue-600 dark:text-blue-400 font-semibold hover:underline"
 					>
-						Read more →
+						Read More
 					</Link>
 				</div>
 			))}
