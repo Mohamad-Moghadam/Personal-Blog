@@ -26,13 +26,17 @@ export default function ContactPage() {
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify(data),
 			});
+
 			if (!res.ok) {
-				throw new Error("Failed to send message");
+				const text = await res.text();
+				throw new Error(`Failed to send message: ${text}`);
 			}
+
 			toast.success("Message sent successfully!");
 			reset();
 		} catch (err: any) {
 			toast.error(err.message || "Something went wrong");
+			console.error("Contact form error:", err);
 		}
 	};
 
@@ -40,7 +44,6 @@ export default function ContactPage() {
 		<div className="min-h-screen bg-zinc-50 dark:bg-black text-gray-800 dark:text-gray-200 font-sans px-6 py-12">
 			<Toaster position="top-right" reverseOrder={false} />
 			<div className="max-w-3xl mx-auto space-y-8">
-				{/* Header */}
 				<header className="text-center mb-10">
 					<h1 className="text-4xl font-bold mb-3">📬 Contact Me</h1>
 					<p className="text-gray-600 dark:text-gray-400">
@@ -48,7 +51,6 @@ export default function ContactPage() {
 					</p>
 				</header>
 
-				{/* Form */}
 				<form
 					className="bg-white dark:bg-zinc-900 p-6 rounded-xl shadow-md space-y-4"
 					onSubmit={handleSubmit(onSubmit)}
@@ -120,7 +122,6 @@ export default function ContactPage() {
 					</button>
 				</form>
 
-				{/* Other platforms */}
 				<section className="text-center space-y-4">
 					<h2 className="text-2xl font-semibold">Other platforms</h2>
 					<div className="flex justify-center space-x-6 rtl:space-x-reverse">
