@@ -22,6 +22,7 @@ export default function Login() {
 	} = useForm<LoginForm>();
 
 	const onSubmit = async (data: LoginForm) => {
+		console.log("FORM SUBMITTED!", data);
 		try {
 			const res = await fetch(`${BASE_URL}/Subscribers/token/`, {
 				method: "POST",
