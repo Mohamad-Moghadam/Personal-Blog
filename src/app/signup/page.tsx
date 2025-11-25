@@ -31,7 +31,7 @@ export default function Signup() {
 			return;
 		}
 		try {
-			const res = await fetch(`${BASE_URL}/Subscribers/create`, {
+			const res = await fetch(`${BASE_URL}/Subscribers/subscrib/`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
