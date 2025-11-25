@@ -3,8 +3,15 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 
+interface Post {
+	id: number;
+	title: string;
+	date: string;
+	excerpt: string;
+}
+
 export default function BlogPage() {
-	const [posts, setPosts] = useState([]);
+	const [posts, setPosts] = useState<Post[]>([]);
 	const [loading, setLoading] = useState(true);
 	const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -13,7 +20,7 @@ export default function BlogPage() {
 			try {
 				const res = await fetch(`${BASE_URL}/Blog/list/`);
 				if (!res.ok) throw new Error("Failed to fetch posts");
-				const data = await res.json();
+				const data: Post[] = await res.json();
 				setPosts(data);
 			} catch (err) {
 				setPosts([]);
