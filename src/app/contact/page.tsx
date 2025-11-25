@@ -21,7 +21,7 @@ export default function ContactPage() {
 
 	const onSubmit = async (data: ContactForm) => {
 		try {
-			const res = await fetch(`${BASE_URL}/Contact/contact`, {
+			const res = await fetch(`${BASE_URL}/Contact/contact/`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify(data),
