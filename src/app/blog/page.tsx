@@ -1,50 +1,13 @@
-"use client";
-
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
-
-type Post = {
-	id: number;
-	title: string;
-	date: string;
-	excerpt: string;
-};
 
 export default function BlogPage() {
-	const [posts, setPosts] = useState<Post[]>([]);
-	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState("");
-
-	const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-
-	useEffect(() => {
-		const fetchPosts = async () => {
-			try {
-				const res = await fetch(`${BASE_URL}/Contact/contact`);
-				if (!res.ok) {
-					throw new Error("Failed to fetch posts");
-				}
-				const data = await res.json();
-				setPosts(data);
-				toast.success("Posts loaded successfully"); // ✅ toast موفقیت
-			} catch (err: any) {
-				setError(err.message);
-				toast.error("Failed to load posts"); // ❌ toast خطا
-			} finally {
-				setLoading(false);
-			}
-		};
-
-		fetchPosts();
-	}, [BASE_URL]);
-
-	if (loading) return <p className="text-center mt-10">Loading...</p>;
-	if (error) return <p className="text-center mt-10 text-red-500">{error}</p>;
+	const posts = [
+		{ id: 1, title: "My First Post", date: "2025-11-09", excerpt: "..." },
+		{ id: 2, title: "Another Post", date: "2025-11-08", excerpt: "..." },
+	];
 
 	return (
 		<div className="min-h-screen bg-zinc-50 dark:bg-black text-gray-800 dark:text-gray-200 font-sans px-6 py-12">
-			<Toaster position="top-right" reverseOrder={false} />
 			<div className="max-w-4xl mx-auto space-y-8">
 				<header className="text-center mb-10">
 					<h1 className="text-4xl font-bold mb-3">📝 My Blog</h1>
