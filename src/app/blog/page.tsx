@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import Link from "next/link";
 
@@ -12,15 +14,13 @@ export default function BlogPage() {
 				const res = await fetch(`${BASE_URL}/Blog/list/`);
 				if (!res.ok) throw new Error("Failed to fetch posts");
 				const data = await res.json();
-				setPosts(data); // assumes the API returns a list of posts
+				setPosts(data);
 			} catch (err) {
-				console.error(err);
-				setPosts([]); // fallback to empty array if error
+				setPosts([]);
 			} finally {
 				setLoading(false);
 			}
 		};
-
 		fetchPosts();
 	}, []);
 
