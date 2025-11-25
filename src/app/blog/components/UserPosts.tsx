@@ -1,6 +1,7 @@
 "use client";
 
 import { Post } from "../types/Post";
+import toast from "react-hot-toast";
 
 interface Props {
 	token: string;
@@ -17,11 +18,14 @@ export default function UserPosts({ token, userPosts, onDelete }: Props) {
 				method: "DELETE",
 				headers: { Authorization: `Bearer ${token}` },
 			});
+
 			if (!res.ok) throw new Error("Failed to delete post");
+
 			onDelete(id);
+			toast.success("Post deleted successfully!");
 		} catch (err) {
 			console.error(err);
-			alert("Error deleting post");
+			toast.error("Error deleting post!");
 		}
 	};
 
