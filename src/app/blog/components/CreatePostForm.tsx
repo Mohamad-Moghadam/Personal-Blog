@@ -25,7 +25,7 @@ export default function CreatePostForm({ token, onCreate }: Props) {
 					Authorization: `Bearer ${token}`,
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify({ title, excerpt }),
+				body: JSON.stringify({ title, content: excerpt, status: "published" }),
 			});
 
 			if (!res.ok) throw new Error("Failed to create post");
