@@ -41,7 +41,7 @@ export default function Login() {
 			localStorage.setItem("token", token);
 			toast.success("Logged in successfully");
 			reset();
-			setTimeout(() => router.push("/"), 1000);
+			setTimeout(() => router.push("/dashboard"), 1000);
 		} catch {
 			toast.error("Connection error");
 		}
