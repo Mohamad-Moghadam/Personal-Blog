@@ -1,10 +1,43 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect, useState } from "react";
+
+type Post = {
+	id: number;
+	title: string;
+	date: string;
+	excerpt: string;
+};
 
 export default function BlogPage() {
-	const posts = [
-		{ id: 1, title: "My First Post", date: "2025-11-09", excerpt: "..." },
-		{ id: 2, title: "Another Post", date: "2025-11-08", excerpt: "..." },
-	];
+	const [posts, setPosts] = useState<Post[]>([]);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState("");
+
+	const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+
+	useEffect(() => {
+		const fetchPosts = async () => {
+			try {
+				const res = await fetch(`${BASE_URL}/Contact/contact`);
+				if (!res.ok) {
+					throw new Error("Failed to fetch posts");
+				}
+				const data = await res.json();
+				setPosts(data);
+			} catch (err: any) {
+				setError(err.message);
+			} finally {
+				setLoading(false);
+			}
+		};
+
+		fetchPosts();
+	}, [BASE_URL]);
+
+	if (loading) return <p className="text-center mt-10">Loading...</p>;
+	if (error) return <p className="text-center mt-10 text-red-500">{error}</p>;
 
 	return (
 		<div className="min-h-screen bg-zinc-50 dark:bg-black text-gray-800 dark:text-gray-200 font-sans px-6 py-12">
