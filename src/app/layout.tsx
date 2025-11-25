@@ -46,7 +46,6 @@ export default function RootLayout({
 						</a>
 					</div>
 				</footer>
-				{/* Toaster برای نمایش toast */}
 				<Toaster />
 			</body>
 		</html>
