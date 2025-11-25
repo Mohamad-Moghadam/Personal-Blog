@@ -22,7 +22,6 @@ export default function Login() {
 	} = useForm<LoginForm>();
 
 	const onSubmit = async (data: LoginForm) => {
-		console.log("FORM SUBMITTED!", data);
 		try {
 			const res = await fetch(`${BASE_URL}/Subscribers/token/`, {
 				method: "POST",
@@ -34,6 +33,7 @@ export default function Login() {
 				return;
 			}
 			const json = await res.json();
+			console.log("Backend response:", json);
 			const token = json.access_token;
 			if (!token) {
 				toast.error("Token not received");
