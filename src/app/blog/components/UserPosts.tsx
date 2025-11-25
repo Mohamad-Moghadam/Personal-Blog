@@ -18,7 +18,7 @@ export default function UserPosts({ token, userPosts, onDelete }: Props) {
 			return;
 		}
 		try {
-			const res = await fetch(`${BASE_URL}/Blog/${id}/delete/`, {
+			const res = await fetch(`${BASE_URL}/Blog/delete/${id}/`, {
 				method: "DELETE",
 				headers: { Authorization: `Bearer ${token}` },
 			});
