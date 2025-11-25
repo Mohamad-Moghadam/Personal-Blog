@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Post } from "./types/Post";
 import BlogList from "./components/BlogList";
 import DashboardSidebar from "./components/DashboardSidebar";
-import { Post } from "./types/Post";
 
 export default function BlogPage() {
 	const [posts, setPosts] = useState<Post[]>([]);
@@ -11,11 +11,9 @@ export default function BlogPage() {
 	const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 	useEffect(() => {
-		// fetch token
 		const t = localStorage.getItem("token");
 		setToken(t);
 
-		// fetch all posts
 		const fetchPosts = async () => {
 			try {
 				const res = await fetch(`${BASE_URL}/Blog/list/`);
@@ -36,7 +34,6 @@ export default function BlogPage() {
 					<DashboardSidebar token={token} />
 				</div>
 			)}
-
 			<div className={token ? "md:col-span-2" : "md:col-span-3"}>
 				<BlogList posts={posts} />
 			</div>

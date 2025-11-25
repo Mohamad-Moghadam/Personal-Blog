@@ -12,13 +12,16 @@ interface Props {
 export default function UserPosts({ token, userPosts, onDelete }: Props) {
 	const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
-	const handleDelete = async (id: number) => {
+	const handleDelete = async (id?: number) => {
+		if (!id) {
+			toast.error("Post ID missing!");
+			return;
+		}
 		try {
 			const res = await fetch(`${BASE_URL}/Blog/${id}/delete/`, {
 				method: "DELETE",
 				headers: { Authorization: `Bearer ${token}` },
 			});
-
 			if (!res.ok) throw new Error("Failed to delete post");
 
 			onDelete(id);

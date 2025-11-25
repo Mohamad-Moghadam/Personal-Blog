@@ -10,7 +10,9 @@ export default async function BlogDetail({ params }: any) {
 	return (
 		<div className="p-6">
 			<h1 className="text-3xl font-bold">{post.title}</h1>
-			<p className="text-gray-500">{post.date}</p>
+			<p className="text-gray-500">
+				{new Date(post.created_at).toLocaleDateString()}
+			</p>
 			<p className="mt-4">{post.content}</p>
 		</div>
 	);

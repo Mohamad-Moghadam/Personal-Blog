@@ -1,9 +1,9 @@
 "use client";
 
+import { useState, useEffect } from "react";
+import { Post } from "../types/Post";
 import CreatePostForm from "./CreatePostForm";
 import UserPosts from "./UserPosts";
-import { useEffect, useState } from "react";
-import { Post } from "../types/Post";
 
 interface Props {
 	token: string;
@@ -37,12 +37,10 @@ export default function DashboardSidebar({ token }: Props) {
 	return (
 		<div className="p-4 border rounded-lg space-y-6 bg-gray-50">
 			<h2 className="text-xl font-semibold">Dashboard</h2>
-
 			<div>
 				<h3 className="font-medium mb-2">Create Post</h3>
 				<CreatePostForm token={token} onCreate={handleCreate} />
 			</div>
-
 			<div>
 				<h3 className="font-medium mb-2">Your Posts</h3>
 				<UserPosts

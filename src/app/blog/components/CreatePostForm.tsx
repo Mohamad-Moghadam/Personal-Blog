@@ -11,7 +11,7 @@ interface Props {
 
 export default function CreatePostForm({ token, onCreate }: Props) {
 	const [title, setTitle] = useState("");
-	const [excerpt, setExcerpt] = useState("");
+	const [content, setContent] = useState("");
 	const [loading, setLoading] = useState(false);
 	const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -25,7 +25,7 @@ export default function CreatePostForm({ token, onCreate }: Props) {
 					Authorization: `Bearer ${token}`,
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify({ title, content: excerpt, status: "published" }),
+				body: JSON.stringify({ title, content, status: "published" }),
 			});
 
 			if (!res.ok) throw new Error("Failed to create post");
@@ -33,7 +33,7 @@ export default function CreatePostForm({ token, onCreate }: Props) {
 			const newPost: Post = await res.json();
 			onCreate(newPost);
 			setTitle("");
-			setExcerpt("");
+			setContent("");
 			toast.success("Post created successfully!");
 		} catch (err) {
 			console.error(err);
@@ -53,16 +53,14 @@ export default function CreatePostForm({ token, onCreate }: Props) {
 				required
 				disabled={loading}
 			/>
-
 			<textarea
 				className="border p-2 w-full rounded"
-				placeholder="Excerpt..."
-				value={excerpt}
-				onChange={(e) => setExcerpt(e.target.value)}
+				placeholder="Content..."
+				value={content}
+				onChange={(e) => setContent(e.target.value)}
 				required
 				disabled={loading}
 			/>
-
 			<button
 				className="px-4 py-2 bg-blue-600 text-white rounded"
 				disabled={loading}

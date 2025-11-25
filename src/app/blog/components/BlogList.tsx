@@ -9,8 +9,10 @@ export default function BlogList({ posts }: { posts: Post[] }) {
 			{posts.map((post) => (
 				<div key={post.id} className="p-4 border rounded-md">
 					<h2 className="text-xl font-semibold">{post.title}</h2>
-					<p className="text-sm text-gray-500">{post.date}</p>
-					<p className="mt-2 text-gray-700">{post.excerpt}</p>
+					<p className="text-sm text-gray-500">
+						{new Date(post.created_at).toLocaleDateString()}
+					</p>
+					<p className="mt-2 text-gray-700">{post.content.slice(0, 100)}...</p>
 					<Link
 						href={`/blog/${post.id}`}
 						className="text-blue-500 mt-2 inline-block"
