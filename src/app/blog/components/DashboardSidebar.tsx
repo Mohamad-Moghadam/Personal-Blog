@@ -21,6 +21,7 @@ export default function DashboardSidebar({ token }: Props) {
 				});
 				if (!res.ok) throw new Error("Failed to fetch user posts");
 				const data: Post[] = await res.json();
+                console.log(data);
 				setUserPosts(data);
 			} catch (err) {
 				console.error(err);
