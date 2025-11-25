@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 type Post = {
 	id: number;
@@ -26,8 +27,10 @@ export default function BlogPage() {
 				}
 				const data = await res.json();
 				setPosts(data);
+				toast.success("Posts loaded successfully"); // ✅ toast موفقیت
 			} catch (err: any) {
 				setError(err.message);
+				toast.error("Failed to load posts"); // ❌ toast خطا
 			} finally {
 				setLoading(false);
 			}
@@ -41,6 +44,7 @@ export default function BlogPage() {
 
 	return (
 		<div className="min-h-screen bg-zinc-50 dark:bg-black text-gray-800 dark:text-gray-200 font-sans px-6 py-12">
+			<Toaster position="top-right" reverseOrder={false} />
 			<div className="max-w-4xl mx-auto space-y-8">
 				<header className="text-center mb-10">
 					<h1 className="text-4xl font-bold mb-3">📝 My Blog</h1>
