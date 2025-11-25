@@ -33,8 +33,7 @@ export default function Login() {
 				return;
 			}
 			const json = await res.json();
-			console.log("Backend response:", json);
-			const token = json.access_token;
+			const token = json.access;
 			if (!token) {
 				toast.error("Token not received");
 				return;
