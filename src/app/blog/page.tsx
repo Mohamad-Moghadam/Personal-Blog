@@ -210,7 +210,7 @@ export default function BlogPage() {
 	const [token, setToken] = useState<string | null>(null);
 
 	useEffect(() => {
-		const t = localStorage.getItem("access_token");
+		const t = localStorage.getItem("token");
 		setToken(t);
 	}, []);
 
