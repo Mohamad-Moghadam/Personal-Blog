@@ -2,19 +2,37 @@
 
 import CreatePostForm from "./CreatePostForm";
 import UserPosts from "./UserPosts";
+import { useEffect, useState } from "react";
 import { Post } from "../types/Post";
-import { useState } from "react";
 
-export default function DashboardSidebar() {
+interface Props {
+	token: string;
+}
+
+export default function DashboardSidebar({ token }: Props) {
 	const [userPosts, setUserPosts] = useState<Post[]>([]);
+	const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
-	const handleCreate = (post: Post) => {
-		setUserPosts([post, ...userPosts]);
-	};
+	useEffect(() => {
+		const fetchUserPosts = async () => {
+			try {
+				const res = await fetch(`${BASE_URL}/Blog/list/`, {
+					headers: { Authorization: `Bearer ${token}` },
+				});
+				if (!res.ok) throw new Error("Failed to fetch user posts");
+				const data: Post[] = await res.json();
+				setUserPosts(data);
+			} catch (err) {
+				console.error(err);
+				setUserPosts([]);
+			}
+		};
+		fetchUserPosts();
+	}, [token]);
 
-	const handleDelete = (id: number) => {
+	const handleCreate = (post: Post) => setUserPosts([post, ...userPosts]);
+	const handleDelete = (id: number) =>
 		setUserPosts(userPosts.filter((p) => p.id !== id));
-	};
 
 	return (
 		<div className="p-4 border rounded-lg space-y-6 bg-gray-50">
@@ -22,12 +40,16 @@ export default function DashboardSidebar() {
 
 			<div>
 				<h3 className="font-medium mb-2">Create Post</h3>
-				<CreatePostForm onCreate={handleCreate} />
+				<CreatePostForm token={token} onCreate={handleCreate} />
 			</div>
 
 			<div>
 				<h3 className="font-medium mb-2">Your Posts</h3>
-				<UserPosts userPosts={userPosts} onDelete={handleDelete} />
+				<UserPosts
+					token={token}
+					userPosts={userPosts}
+					onDelete={handleDelete}
+				/>
 			</div>
 		</div>
 	);

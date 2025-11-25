@@ -1,26 +1,38 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
+import { Post } from "../types/Post";
 
-export default function CreatePostForm({
-	onCreate,
-}: {
-	onCreate: (p: any) => void;
-}) {
+interface Props {
+	token: string;
+	onCreate: (p: Post) => void;
+}
+
+export default function CreatePostForm({ token, onCreate }: Props) {
 	const [title, setTitle] = useState("");
 	const [excerpt, setExcerpt] = useState("");
+	const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
-	const handleSubmit = (e: React.FormEvent) => {
+	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
-		const newPost = {
-			id: Date.now(),
-			title,
-			excerpt,
-			date: new Date().toISOString().slice(0, 10),
-		};
-		onCreate(newPost);
-		setTitle("");
-		setExcerpt("");
+		try {
+			const res = await fetch(`${BASE_URL}/Blog/create/`, {
+				method: "POST",
+				headers: {
+					Authorization: `Bearer ${token}`,
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ title, excerpt }),
+			});
+			if (!res.ok) throw new Error("Failed to create post");
+			const newPost: Post = await res.json();
+			onCreate(newPost);
+			setTitle("");
+			setExcerpt("");
+		} catch (err) {
+			console.error(err);
+			alert("Error creating post");
+		}
 	};
 
 	return (
@@ -30,6 +42,7 @@ export default function CreatePostForm({
 				placeholder="Title..."
 				value={title}
 				onChange={(e) => setTitle(e.target.value)}
+				required
 			/>
 
 			<textarea
@@ -37,6 +50,7 @@ export default function CreatePostForm({
 				placeholder="Excerpt..."
 				value={excerpt}
 				onChange={(e) => setExcerpt(e.target.value)}
+				required
 			/>
 
 			<button className="px-4 py-2 bg-blue-600 text-white rounded">

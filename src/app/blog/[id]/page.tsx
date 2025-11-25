@@ -1,19 +1,11 @@
 import { Post } from "../types/Post";
 
-const fakePosts: Post[] = [
-	{
-		id: 1,
-		title: "Welcome to My Blog",
-		excerpt: "This is the first post...",
-		date: "2025-01-01",
-		content: "Full content of the first post...",
-	},
-];
-
-export default function BlogDetail({ params }: any) {
-	const post = fakePosts.find((p) => p.id == params.id);
-
-	if (!post) return <p>Post Not Found</p>;
+export default async function BlogDetail({ params }: any) {
+	const res = await fetch(
+		`${process.env.NEXT_PUBLIC_BASE_URL}/Blog/${params.id}`
+	);
+	if (!res.ok) return <p>Post not found</p>;
+	const post: Post = await res.json();
 
 	return (
 		<div className="p-6">
