@@ -47,7 +47,8 @@ export default function Signup() {
 			toast.success("Signed up successfully");
 			reset();
 			setTimeout(() => router.push("/login"), 1000);
-		} catch {
+		} catch (err) {
+			console.error(err);
 			toast.error("Connection error");
 		}
 	};
@@ -61,25 +62,25 @@ export default function Signup() {
 				<form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
 					<input
 						{...register("username", { required: true })}
-						placeholder="Username"
+						placeholder="Enter your username"
 						className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
 					/>
 					<input
 						{...register("email", { required: true })}
 						type="email"
-						placeholder="Email"
+						placeholder="Enter your email address"
 						className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
 					/>
 					<input
 						{...register("password", { required: true })}
 						type="password"
-						placeholder="Password"
+						placeholder="Enter your password"
 						className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
 					/>
 					<input
 						{...register("confirm", { required: true })}
 						type="password"
-						placeholder="Confirm Password"
+						placeholder="Confirm your password"
 						className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
 					/>
 					<button
