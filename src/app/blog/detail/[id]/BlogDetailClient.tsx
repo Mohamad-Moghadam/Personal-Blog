@@ -1,3 +1,4 @@
+// src/app/blog/[id]/BlogDetailClient.tsx
 "use client";
 
 import { useEffect, useState } from "react";
