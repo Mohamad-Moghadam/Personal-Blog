@@ -11,5 +11,9 @@ export default async function BlogDetailPage({ params }: any) {
 			</p>
 		);
 
-	return <BlogDetailClient postId={id} />;
+return (
+	<div className="min-h-[100vh] flex flex-col">
+		<BlogDetailClient postId={id} />
+	</div>
+);
 }
