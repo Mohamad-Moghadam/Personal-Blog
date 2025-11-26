@@ -19,7 +19,7 @@ export default function BlogDetailClient({ postId }: { postId: string }) {
 	useEffect(() => {
 		const loadPost = async () => {
 			try {
-				const url = `${process.env.NEXT_PUBLIC_BASE_URL}/blog/detail/${postId}/`;
+				const url = `${process.env.NEXT_PUBLIC_BASE_URL}/Blog/detail/${postId}/`;
 				console.log("Fetching:", url);
 
 				const res = await fetch(url);
