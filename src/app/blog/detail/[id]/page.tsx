@@ -1,9 +1,5 @@
 import BlogDetailClient from "./BlogDetailClient";
 
-interface PageProps {
-	params: { id: string };
-}
-
-export default function BlogDetailPage({ params }: PageProps) {
+export default function BlogDetailPage({ params }: { params: { id: string } }) {
 	return <BlogDetailClient postId={params.id} />;
 }
