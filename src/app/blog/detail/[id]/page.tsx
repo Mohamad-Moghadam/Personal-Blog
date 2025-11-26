@@ -1,13 +1,14 @@
 import BlogDetailClient from "./BlogDetailClient";
 
 export default async function BlogDetailPage({ params }: any) {
-	const id = Array.isArray(params.id) ? params.id[0] : params.id;
+	const resolved = await params;
+	const id = Array.isArray(resolved.id) ? resolved.id[0] : resolved.id;
 
 	if (!id)
 		return (
-			<div className="p-6 text-center text-red-500 font-semibold text-lg">
+			<p className="p-6 text-center text-red-500 font-semibold text-lg">
 				Post ID missing
-			</div>
+			</p>
 		);
 
 	return <BlogDetailClient postId={id} />;
