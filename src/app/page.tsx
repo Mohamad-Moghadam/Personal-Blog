@@ -177,7 +177,7 @@ export default function Home() {
 							}
 							@media (max-width: 768px) {
 								.animate-marquee {
-									animation: marquee 220s linear infinite;
+									animation: marquee 45s linear infinite;
 								}
 							}
 						`}</style>
