@@ -3,12 +3,30 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 
+interface NewsItem {
+	title: string;
+	link: string;
+}
+
 export default function Home() {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const [news, setNews] = useState<NewsItem[]>([]);
 
 	useEffect(() => {
 		const token = localStorage.getItem("token");
 		setIsLoggedIn(!!token);
+
+		if (token) {
+			const fetchNews = async () => {
+				const apiKey = process.env.NEXT_PUBLIC_NEWSDATA_API_KEY;
+				const res = await fetch(
+					`https://newsdata.io/api/1/latest?apikey=${apiKey}&q=technology`
+				);
+				const json = await res.json();
+				setNews(json.results || []);
+			};
+			fetchNews();
+		}
 	}, []);
 
 	const categories = [
@@ -106,6 +124,38 @@ export default function Home() {
 								Subscribe Now
 							</button>
 						</Link>
+					</section>
+				)}
+
+				{isLoggedIn && news.length > 0 && (
+					<section className="bg-gray-200 dark:bg-gray-900 p-4 rounded-lg overflow-hidden relative">
+						<div className="whitespace-nowrap animate-marquee">
+							{news.map((n, i) => (
+								<a
+									key={i}
+									href={n.link}
+									target="_blank"
+									rel="noopener noreferrer"
+									className="inline-block mx-6 text-blue-600 dark:text-blue-400 font-medium hover:underline"
+								>
+									{n.title}
+								</a>
+							))}
+						</div>
+						<style jsx>{`
+							@keyframes marquee {
+								0% {
+									transform: translateX(100%);
+								}
+								100% {
+									transform: translateX(-100%);
+								}
+							}
+							.animate-marquee {
+								display: inline-block;
+								animation: marquee 30s linear infinite;
+							}
+						`}</style>
 					</section>
 				)}
 			</main>
