@@ -1,4 +1,5 @@
 "use client";
+
 import Image from "next/image";
 import { useState, useEffect } from "react";
 
@@ -8,7 +9,6 @@ interface NewsItem {
 	image_url?: string;
 }
 
-// کامپوننت NewsBar با طراحی تمیز و responsive
 export default function NewsBar() {
 	const [news, setNews] = useState<NewsItem[]>([]);
 
@@ -21,39 +21,44 @@ export default function NewsBar() {
 			const json = await res.json();
 			setNews(json.results || []);
 		};
+
 		fetchNews();
 	}, []);
 
 	if (news.length === 0) return null;
 
 	return (
-		<div
-			className="w-full overflow-hidden relative bg-gray-100 dark:bg-gray-900 p-4 rounded-lg shadow-md"
-			style={{ height: "160px" }}
+		<section
+			className="w-full overflow-hidden relative bg-gray-200 dark:bg-gray-900 p-4 rounded-lg"
+			style={{ height: "200px" }}
 		>
-			<div className="flex animate-marquee items-center space-x-8 h-full">
-				{news.map((item, idx) => (
+			<div className="flex animate-marquee space-x-6 items-stretch h-full">
+				{news.map((item, i) => (
 					<a
-						key={idx}
+						key={i}
 						href={item.link}
 						target="_blank"
 						rel="noopener noreferrer"
-						className="flex items-center min-w-max h-full space-x-4 transition transform hover:scale-105"
+						className="flex flex-col min-w-[180px] bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md"
 					>
-						{item.image_url && (
-							<div className="flex-shrink-0 w-16 h-16 relative rounded-md overflow-hidden">
-								<Image
-									src={item.image_url}
-									alt={item.title}
-									fill
-									style={{ objectFit: "cover" }}
-									priority={true}
-								/>
+						{item.image_url ? (
+							<Image
+								src={item.image_url}
+								alt={item.title}
+								width={180}
+								height={100}
+								className="object-cover"
+							/>
+						) : (
+							<div className="w-full h-[100px] bg-gray-300 dark:bg-gray-700 flex items-center justify-center">
+								<span className="text-gray-500">No Image</span>
 							</div>
 						)}
-						<p className="text-blue-700 dark:text-blue-400 font-medium whitespace-nowrap">
-							{item.title}
-						</p>
+						<div className="p-2">
+							<p className="text-sm font-medium text-gray-800 dark:text-gray-200 line-clamp-2">
+								{item.title}
+							</p>
+						</div>
 					</a>
 				))}
 			</div>
@@ -69,17 +74,16 @@ export default function NewsBar() {
 				}
 				.animate-marquee {
 					display: flex;
-					align-items: center;
+					align-items: stretch;
 					height: 100%;
-					animation: marquee 45s linear infinite;
+					animation: marquee 120s linear infinite;
 				}
-
 				@media (max-width: 768px) {
 					.animate-marquee {
-						animation: marquee 45s linear infinite;
+						animation: marquee 180s linear infinite;
 					}
 				}
 			`}</style>
-		</div>
+		</section>
 	);
 }
