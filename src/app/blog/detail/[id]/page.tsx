@@ -1,17 +1,32 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { Post } from "@/app/blog/types/Post";
 
-interface PageProps {
-	params: { id: string };
+interface Props {
+	postId: string;
 }
 
-export default async function BlogDetail({ params }: PageProps) {
-	const res = await fetch(
-		`${process.env.NEXT_PUBLIC_BASE_URL}/Blog/detail/${params.id}/`
-	);
+export default function BlogDetailClient({ postId }: Props) {
+	const [post, setPost] = useState<Post | null>(null);
+	const [loading, setLoading] = useState(true);
 
-	if (!res.ok) return <p className="text-red-500">Post not found</p>;
+	useEffect(() => {
+		const fetchPost = async () => {
+			const res = await fetch(
+				`${process.env.NEXT_PUBLIC_BASE_URL}/Blog/detail/${postId}/`
+			);
+			if (res.ok) {
+				const data = await res.json();
+				setPost(data);
+			}
+			setLoading(false);
+		};
+		fetchPost();
+	}, [postId]);
 
-	const post: Post = await res.json();
+	if (loading) return <p>Loading...</p>;
+	if (!post) return <p className="text-red-500">Post not found</p>;
 
 	return (
 		<div className="p-6 max-w-3xl mx-auto">
