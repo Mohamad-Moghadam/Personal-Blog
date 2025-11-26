@@ -1,12 +1,15 @@
 import BlogDetailClient from "./BlogDetailClient";
-import { PageProps } from "next/app";
 
-interface Props {
-	params: { id: string };
+interface PageParams {
+	id: string;
 }
 
-export default function BlogDetailPage({ params }: Props) {
-	const postId = params.id;
+interface PageProps {
+	params: PageParams;
+}
+
+export default function BlogDetailPage({ params }: PageProps) {
+	const postId = Array.isArray(params.id) ? params.id[0] : params.id;
 	if (!postId) return <p className="p-6 text-red-500">Post ID missing</p>;
 
 	return <BlogDetailClient postId={postId} />;
