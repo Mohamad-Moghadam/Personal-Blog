@@ -22,7 +22,7 @@ export default function UserPosts({ token, userPosts, onDelete }: Props) {
 			if (!res.ok) throw new Error("Failed to delete");
 
 			onDelete(id);
-			tast.success("Post deleted!");
+			toast.success("Post deleted!");
 		} catch {
 			toast.error("Error deleting post");
 		}
