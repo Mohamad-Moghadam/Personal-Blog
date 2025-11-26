@@ -1,7 +1,16 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
+import { useState, useEffect } from "react";
 
 export default function Home() {
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+	useEffect(() => {
+		const token = localStorage.getItem("token");
+		setIsLoggedIn(!!token);
+	}, []);
+
 	const categories = [
 		"Programming/ Code",
 		"Learning/ Tutorials",
@@ -85,18 +94,20 @@ export default function Home() {
 					</p>
 				</section>
 
-				<section className="bg-green-500 dark:bg-green-700 p-6 rounded-lg text-center text-white">
-					<h2 className="text-2xl font-bold mb-4">Join My Newsletter!</h2>
-					<p className="mb-4">
-						Get the latest tips, tutorials, and updates delivered straight to
-						your inbox.
-					</p>
-					<Link href="/signup">
-						<button className="bg-white text-green-600 font-bold px-6 py-2 rounded hover:bg-gray-200 transition">
-							Subscribe Now
-						</button>
-					</Link>
-				</section>
+				{!isLoggedIn && (
+					<section className="bg-green-500 dark:bg-green-700 p-6 rounded-lg text-center text-white">
+						<h2 className="text-2xl font-bold mb-4">Join My Newsletter!</h2>
+						<p className="mb-4">
+							Get the latest tips, tutorials, and updates delivered straight to
+							your inbox.
+						</p>
+						<Link href="/signup">
+							<button className="bg-white text-green-600 font-bold px-6 py-2 rounded hover:bg-gray-200 transition">
+								Subscribe Now
+							</button>
+						</Link>
+					</section>
+				)}
 			</main>
 		</div>
 	);
