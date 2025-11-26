@@ -31,12 +31,20 @@ export default function RootLayout({
 					<p>© 2025 My Blog. All rights reserved.</p>
 					<div className="mt-2 space-x-4">
 						<a
-							href="https://instagram.com/username"
+							href="https://github.com/Mohamad-Moghadam"
 							target="_blank"
 							rel="noopener noreferrer"
 							className="hover:text-yellow-400 transition-colors"
 						>
-							Instagram
+							GitHub
+						</a>
+						<a
+							href="https://www.linkedin.com/in/mohamad-reza-soodmand-moghadam-1687b5349/"
+							target="_blank"
+							rel="noopener noreferrer"
+							className="hover:text-yellow-400 transition-colors"
+						>
+							LinkedIn
 						</a>
 						<a
 							href="/about"
@@ -45,7 +53,17 @@ export default function RootLayout({
 							About
 						</a>
 					</div>
+					<div className="mt-1 text-sm text-gray-400">
+						Email:{" "}
+						<a
+							href="mailto:m.reza.s.moghadam@gmail.com"
+							className="hover:text-yellow-400"
+						>
+							m.reza.s.moghadam@gmail.com
+						</a>
+					</div>
 				</footer>
+
 				<Toaster />
 			</body>
 		</html>
