@@ -1,6 +1,11 @@
 import { getNews } from "@/lib/news";
 
 export default async function NewsBar() {
+	interface NewsItem {
+		title: string;
+		link: string;
+	}
+
 	const news = await getNews();
 
 	if (news.length === 0) return null;
@@ -8,14 +13,8 @@ export default async function NewsBar() {
 	return (
 		<div className="overflow-hidden relative bg-gray-200 dark:bg-gray-900 p-4 rounded-lg">
 			<div className="whitespace-nowrap animate-marquee">
-				{news.map((n, i) => (
-					<a
-						key={i}
-						href={n.link}
-						target="_blank"
-						rel="noopener noreferrer"
-						className="inline-block mx-6 text-blue-600 dark:text-blue-400 font-medium hover:underline"
-					>
+				{news.map((n: NewsItem, i: number) => (
+					<a key={i} href={n.link} target="_blank" rel="noopener noreferrer">
 						{n.title}
 					</a>
 				))}
