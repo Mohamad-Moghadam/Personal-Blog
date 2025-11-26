@@ -17,36 +17,28 @@ export default function DashboardSidebar({ token }: Props) {
 	const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 	useEffect(() => {
-		if (!token) return;
-
 		const fetchUserPosts = async () => {
 			try {
 				setLoading(true);
-				setError(null);
-
 				const res = await fetch(`${BASE_URL}/Blog/my-posts/`, {
 					headers: {
 						Authorization: `Bearer ${token}`,
-						"Content-Type": "application/json",
 					},
 				});
 
-				if (!res.ok) {
-					throw new Error(`Failed to fetch posts: ${res.status}`);
-				}
+				if (!res.ok) throw new Error("Failed to fetch posts");
 
 				const data: Post[] = await res.json();
 				setUserPosts(data);
 			} catch (err: any) {
-				setError(err.message || "Unknown error");
-				setUserPosts([]);
+				setError(err.message);
 			} finally {
 				setLoading(false);
 			}
 		};
 
-		fetchUserPosts();
-	}, [token, BASE_URL]);
+		if (token) fetchUserPosts();
+	}, [token]);
 
 	const handleCreate = (post: Post) => {
 		setUserPosts((prev) => [post, ...prev]);
@@ -70,9 +62,6 @@ export default function DashboardSidebar({ token }: Props) {
 
 				{loading && <p>Loading...</p>}
 				{error && <p className="text-red-600">Error: {error}</p>}
-				{!loading && !error && userPosts.length === 0 && (
-					<p className="text-gray-600">You have no posts yet.</p>
-				)}
 
 				<UserPosts
 					token={token}
