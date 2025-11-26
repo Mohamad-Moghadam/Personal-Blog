@@ -20,14 +20,10 @@ export default function BlogDetailClient({ postId }: { postId: string }) {
 		const loadPost = async () => {
 			try {
 				const url = `${process.env.NEXT_PUBLIC_BASE_URL}/Blog/detail/${postId}/`;
-				console.log("Fetching:", url);
-
 				const res = await fetch(url);
 				const data = await res.json();
-
 				setPost(data);
-			} catch (error) {
-				console.error("Error fetching:", error);
+			} catch {
 				setPost(null);
 			} finally {
 				setLoading(false);
@@ -37,23 +33,33 @@ export default function BlogDetailClient({ postId }: { postId: string }) {
 		loadPost();
 	}, [postId]);
 
-	if (loading) return <p className="p-6">Loading…</p>;
-	if (!post) return <p className="p-6 text-red-500">Post not found.</p>;
+	if (loading)
+		return (
+			<div className="p-6 text-center text-gray-500 text-lg animate-pulse">
+				Loading…
+			</div>
+		);
+
+	if (!post)
+		return (
+			<div className="p-6 text-center text-red-600 text-lg font-semibold">
+				Post not found.
+			</div>
+		);
 
 	return (
-		<div className="max-w-3xl mx-auto p-6 space-y-4">
-			<h1 className="text-4xl font-bold">{post.title}</h1>
+		<div className="max-w-4xl mx-auto p-6 space-y-6 bg-white shadow-lg rounded-xl">
+			<h1 className="text-4xl font-extrabold text-gray-900">{post.title}</h1>
 
-			<p className="text-gray-500">
-				Posted on {new Date(post.created_at).toLocaleDateString()} • Status:{" "}
-				{post.status}
-			</p>
-
-			<p className="text-lg leading-relaxed">{post.content}</p>
-
-			<div className="text-sm text-gray-600">
-				Author ID: {post.author ?? "Unknown"}
+			<div className="flex flex-wrap gap-4 text-sm text-gray-500">
+				<span>Posted: {new Date(post.created_at).toLocaleDateString()}</span>
+				<span>Status: {post.status}</span>
+				<span>Author: {post.author ?? "Unknown"}</span>
 			</div>
+
+			<p className="text-gray-700 text-lg leading-relaxed whitespace-pre-line">
+				{post.content}
+			</p>
 		</div>
 	);
 }
