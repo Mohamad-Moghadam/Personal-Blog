@@ -1,26 +1,19 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { Post } from "../types/Post";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
 
-export default function CreateBlogPage() {
-	const router = useRouter();
+interface Props {
+	token: string;
+	onCreate: (p: Post) => void;
+}
+
+export default function CreatePostForm({ token, onCreate }: Props) {
 	const [title, setTitle] = useState("");
 	const [content, setContent] = useState("");
-	const [token, setToken] = useState<string | null>(null);
 	const [loading, setLoading] = useState(false);
-
 	const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-
-	useEffect(() => {
-		const t = localStorage.getItem("token");
-		setToken(t);
-
-		if (!t) router.replace("/signin");
-	}, [router]);
-
-	if (!token) return null; // prevent flicker
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -36,45 +29,40 @@ export default function CreateBlogPage() {
 				body: JSON.stringify({ title, content, status: "published" }),
 			});
 
-			if (!res.ok) throw new Error("Failed to create post");
+			if (!res.ok) throw new Error("Failed");
 
+			const newPost: Post = await res.json();
+			onCreate(newPost);
+			setTitle("");
+			setContent("");
 			toast.success("Post created!");
-			router.push("/blog");
-		} catch {
-			toast.error("Error creating post");
+		} catch (err) {
+			toast.error("Error!");
 		} finally {
 			setLoading(false);
 		}
 	};
 
 	return (
-		<div className="max-w-3xl mx-auto p-6">
-			<h1 className="text-3xl font-bold mb-4">Create New Post</h1>
-
-			<form className="space-y-4" onSubmit={handleSubmit}>
-				<input
-					className="w-full p-3 border rounded"
-					placeholder="Title..."
-					value={title}
-					onChange={(e) => setTitle(e.target.value)}
-					required
-				/>
-
-				<textarea
-					className="w-full p-3 border rounded h-40"
-					placeholder="Write your content..."
-					value={content}
-					onChange={(e) => setContent(e.target.value)}
-					required
-				/>
-
-				<button
-					className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
-					disabled={loading}
-				>
-					{loading ? "Publishing..." : "Publish"}
-				</button>
-			</form>
-		</div>
+		<form className="space-y-3" onSubmit={handleSubmit}>
+			<input
+				className="border p-2 w-full rounded"
+				placeholder="Title..."
+				value={title}
+				onChange={(e) => setTitle(e.target.value)}
+			/>
+			<textarea
+				className="border p-2 w-full rounded"
+				placeholder="Content..."
+				value={content}
+				onChange={(e) => setContent(e.target.value)}
+			/>
+			<button
+				className="px-4 py-2 bg-blue-600 text-white rounded"
+				disabled={loading}
+			>
+				{loading ? "Creating..." : "Create"}
+			</button>
+		</form>
 	);
 }
