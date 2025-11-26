@@ -26,21 +26,30 @@ export default function BlogPage() {
 	}, []);
 
 	return (
-		<div className="p-8 max-w-5xl mx-auto space-y-6">
-			<div className="flex justify-between items-center">
+		<div className="flex flex-col min-h-screen p-8 max-w-5xl mx-auto">
+			<div className="flex justify-between items-center mb-6">
 				<h1 className="text-3xl font-bold">Blog</h1>
 
-				{token && (
+				{token ? (
 					<Link
 						href="/blog/create"
 						className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
 					>
 						Create New Post
 					</Link>
+				) : (
+					<Link
+						href="/signup"
+						className="px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500 transition"
+					>
+						Sign Up to Create
+					</Link>
 				)}
 			</div>
 
-			<BlogList posts={posts} />
+			<div className="flex-1">
+				<BlogList posts={posts} />
+			</div>
 		</div>
 	);
 }
