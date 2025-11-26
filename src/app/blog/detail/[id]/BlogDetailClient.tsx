@@ -1,4 +1,3 @@
-// src/app/blog/[id]/BlogDetailClient.tsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -13,11 +12,7 @@ export interface Post {
 	status: string;
 }
 
-interface Props {
-	postId: string;
-}
-
-export default function BlogDetailClient({ postId }: Props) {
+export default function BlogDetailClient({ postId }: { postId: string }) {
 	const [post, setPost] = useState<Post | null>(null);
 	const [loading, setLoading] = useState(true);
 

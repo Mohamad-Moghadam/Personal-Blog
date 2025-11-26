@@ -1,16 +1,10 @@
-// src/app/blog/[id]/page.tsx
-
 import BlogDetailClient from "./BlogDetailClient";
 
-export default function BlogDetailPage({
-	params,
-}: {
-	params: { id: string | string[] };
-}) {
+// Next.js 16 automatically provides `params` with the dynamic route key ([id])
+export default function BlogDetailPage({ params }: any) {
 	const postId = Array.isArray(params.id) ? params.id[0] : params.id;
 
 	if (!postId) return <p className="p-6 text-red-500">Post ID missing</p>;
 
-	// Render client component
 	return <BlogDetailClient postId={postId} />;
 }
