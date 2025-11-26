@@ -1,6 +1,5 @@
 "use client";
 import Image from "next/image";
-import Link from "next/link";
 import { useState, useEffect } from "react";
 
 interface NewsItem {
@@ -9,7 +8,7 @@ interface NewsItem {
 	image_url?: string;
 }
 
-// کامپوننت NewsBar که اخبار رو به صورت marquee نشون میده
+// کامپوننت NewsBar با طراحی تمیز و responsive
 export default function NewsBar() {
 	const [news, setNews] = useState<NewsItem[]>([]);
 
@@ -29,30 +28,32 @@ export default function NewsBar() {
 
 	return (
 		<div
-			className="w-full overflow-hidden relative bg-gray-200 dark:bg-gray-900 p-6 rounded-lg"
-			style={{ height: "150px" }}
+			className="w-full overflow-hidden relative bg-gray-100 dark:bg-gray-900 p-4 rounded-lg shadow-md"
+			style={{ height: "160px" }}
 		>
-			<div className="flex animate-marquee items-center space-x-6 h-full">
-				{news.map((n, i) => (
+			<div className="flex animate-marquee items-center space-x-8 h-full">
+				{news.map((item, idx) => (
 					<a
-						key={i}
-						href={n.link}
+						key={idx}
+						href={item.link}
 						target="_blank"
 						rel="noopener noreferrer"
-						className="flex items-center space-x-4 min-w-max h-full"
+						className="flex items-center min-w-max h-full space-x-4 transition transform hover:scale-105"
 					>
-						{n.image_url && (
-							<Image
-								src={n.image_url}
-								alt={n.title}
-								width={60}
-								height={60}
-								className="rounded-md object-cover"
-							/>
+						{item.image_url && (
+							<div className="flex-shrink-0 w-16 h-16 relative rounded-md overflow-hidden">
+								<Image
+									src={item.image_url}
+									alt={item.title}
+									fill
+									style={{ objectFit: "cover" }}
+									priority={true}
+								/>
+							</div>
 						)}
-						<span className="text-blue-600 dark:text-blue-400 font-medium hover:underline">
-							{n.title}
-						</span>
+						<p className="text-blue-700 dark:text-blue-400 font-medium whitespace-nowrap">
+							{item.title}
+						</p>
 					</a>
 				))}
 			</div>
@@ -70,11 +71,12 @@ export default function NewsBar() {
 					display: flex;
 					align-items: center;
 					height: 100%;
-					animation: marquee 360s linear infinite;
+					animation: marquee 420s linear infinite;
 				}
+
 				@media (max-width: 768px) {
 					.animate-marquee {
-						animation: marquee 420s linear infinite;
+						animation: marquee 500s linear infinite;
 					}
 				}
 			`}</style>
