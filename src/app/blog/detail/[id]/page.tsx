@@ -1,19 +1,25 @@
 import { Post } from "../../types/Post";
 
-export default async function BlogDetail({ params }: any) {
+interface Props {
+	params: { id: string };
+}
+
+export default async function BlogDetail({ params }: Props) {
 	const res = await fetch(
-		`${process.env.NEXT_PUBLIC_BASE_URL}/Blog/${params.id}`
+		`${process.env.NEXT_PUBLIC_BASE_URL}/Blog/detail/${params.id}/`
 	);
-	if (!res.ok) return <p>Post not found</p>;
+
+	if (!res.ok) return <p className="text-red-500">Post not found</p>;
+
 	const post: Post = await res.json();
 
 	return (
-		<div className="p-6">
-			<h1 className="text-3xl font-bold">{post.title}</h1>
-			<p className="text-gray-500">
+		<div className="p-6 max-w-3xl mx-auto">
+			<h1 className="text-3xl font-bold mb-2">{post.title}</h1>
+			<p className="text-gray-500 mb-4">
 				{new Date(post.created_at).toLocaleDateString()}
 			</p>
-			<p className="mt-4">{post.content}</p>
+			<p className="text-gray-800">{post.content}</p>
 		</div>
 	);
 }
