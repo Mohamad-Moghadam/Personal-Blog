@@ -1,5 +1,11 @@
 import BlogDetailClient from "./BlogDetailClient";
 
-export default function BlogDetailPage(props: any) {
-	return <BlogDetailClient postId={props.params.id} />;
+interface Props {
+	params: {
+		id: string;
+	};
+}
+
+export default function BlogDetailPage({ params }: Props) {
+	return <BlogDetailClient postId={params.id} />;
 }

@@ -3,28 +3,49 @@
 import { useEffect, useState } from "react";
 import { Post } from "@/app/blog/types/Post";
 
-export default function BlogDetailClient({ postId }: { postId: string }) {
+interface Props {
+	postId: string;
+}
+
+export default function BlogDetailClient({ postId }: Props) {
 	const [post, setPost] = useState<Post | null>(null);
 	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
 
 	useEffect(() => {
-		const load = async () => {
+		const loadPost = async () => {
+			setLoading(true);
+			setError(null);
 			try {
+				// تبدیل postId به عدد
+				const id = Number(postId);
+				if (isNaN(id)) throw new Error("Invalid post ID");
+
 				const res = await fetch(
-					`${process.env.NEXT_PUBLIC_BASE_URL}/Blog/detail/${postId}/`
+					`${process.env.NEXT_PUBLIC_BASE_URL}/Blog/detail/${id}/`
 				);
-				const data = await res.json();
+
+				if (!res.ok) {
+					if (res.status === 404) throw new Error("Post not found");
+					throw new Error("Failed to fetch post");
+				}
+
+				const data: Post = await res.json();
 				setPost(data);
-			} catch {
+			} catch (err: any) {
+				console.error(err);
 				setPost(null);
+				setError(err.message || "Unknown error");
 			} finally {
 				setLoading(false);
 			}
 		};
-		load();
+
+		loadPost();
 	}, [postId]);
 
-	if (loading) return <p className="p-6">Loading...</p>;
+	if (loading) return <p className="p-6 text-gray-600">Loading post...</p>;
+	if (error) return <p className="p-6 text-red-500">{error}</p>;
 	if (!post) return <p className="p-6 text-red-500">Post not found.</p>;
 
 	return (
