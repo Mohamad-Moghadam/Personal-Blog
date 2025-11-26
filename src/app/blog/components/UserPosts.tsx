@@ -17,11 +17,13 @@ export default function UserPosts({ token, userPosts, onDelete }: Props) {
 			toast.error("Post ID missing!");
 			return;
 		}
+
 		try {
 			const res = await fetch(`${BASE_URL}/Blog/delete/${id}/`, {
 				method: "DELETE",
 				headers: { Authorization: `Bearer ${token}` },
 			});
+
 			if (!res.ok) throw new Error("Failed to delete post");
 
 			onDelete(id);
@@ -32,14 +34,30 @@ export default function UserPosts({ token, userPosts, onDelete }: Props) {
 		}
 	};
 
+	if (userPosts.length === 0)
+		return (
+			<div className="p-4 text-gray-600 text-center border rounded-lg bg-gray-50">
+				You haven't created any posts yet.
+			</div>
+		);
+
 	return (
-		<div className="space-y-3">
+		<div className="space-y-4">
 			{userPosts.map((post) => (
-				<div key={post.id} className="p-3 border rounded flex justify-between">
-					<span>{post.title}</span>
+				<div
+					key={post.id}
+					className="p-4 border bg-white rounded-xl shadow-sm flex items-center justify-between hover:shadow-md transition"
+				>
+					<div>
+						<p className="font-semibold text-gray-800">{post.title}</p>
+						<p className="text-xs text-gray-500">
+							{new Date(post.created_at).toLocaleDateString()}
+						</p>
+					</div>
+
 					<button
 						onClick={() => handleDelete(post.id)}
-						className="text-red-600"
+						className="px-3 py-1 text-sm bg-red-500 text-white rounded-md hover:bg-red-600 transition"
 					>
 						Delete
 					</button>
