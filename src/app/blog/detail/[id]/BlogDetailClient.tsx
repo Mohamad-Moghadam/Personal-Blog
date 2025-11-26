@@ -3,7 +3,11 @@
 import { useEffect, useState } from "react";
 import { Post } from "@/app/blog/types/Post";
 
-export default function BlogDetailClient({ postId }: { postId: string }) {
+interface Props {
+	postId: string;
+}
+
+export default function BlogDetailClient({ postId }: Props) {
 	const [post, setPost] = useState<Post | null>(null);
 	const [loading, setLoading] = useState(true);
 
@@ -16,7 +20,7 @@ export default function BlogDetailClient({ postId }: { postId: string }) {
 				if (!res.ok) throw new Error("Post not found");
 				const data: Post = await res.json();
 				setPost(data);
-			} catch (err) {
+			} catch {
 				setPost(null);
 			} finally {
 				setLoading(false);

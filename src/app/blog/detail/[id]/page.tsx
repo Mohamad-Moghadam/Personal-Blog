@@ -1,13 +1,10 @@
-"use client";
-
+// src/app/blog/detail/[id]/page.tsx
 import BlogDetailClient from "./BlogDetailClient";
 
-export default function BlogDetailPage(props: any) {
-	const { params } = props;
+interface PageProps {
+	params: { id: string };
+}
 
-	if (!params?.id) return <p className="p-6 text-red-500">Post ID missing</p>;
-
-	const postId = Array.isArray(params.id) ? params.id[0] : params.id;
-
-	return <BlogDetailClient postId={postId} />;
+export default function BlogDetailPage({ params }: PageProps) {
+	return <BlogDetailClient postId={params.id} />;
 }
