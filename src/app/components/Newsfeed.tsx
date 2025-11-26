@@ -15,11 +15,20 @@ export default function NewsBar() {
 	useEffect(() => {
 		const fetchNews = async () => {
 			const apiKey = process.env.NEXT_PUBLIC_NEWSDATA_API_KEY;
-			const res = await fetch(
-				`https://newsdata.io/api/1/latest?apikey=${apiKey}&q=technology`
-			);
-			const json = await res.json();
-			setNews(json.results || []);
+			if (!apiKey) {
+				console.error("API key is missing!");
+				return;
+			}
+
+			try {
+				const res = await fetch(
+					`https://newsdata.io/api/1/latest?apikey=${apiKey}&q=technology`
+				);
+				const json = await res.json();
+				setNews(json.results || []);
+			} catch (err) {
+				console.error("Failed to fetch news:", err);
+			}
 		};
 
 		fetchNews();
@@ -30,7 +39,7 @@ export default function NewsBar() {
 	return (
 		<section
 			className="w-full overflow-hidden relative bg-gray-200 dark:bg-gray-900 p-4 rounded-lg"
-			style={{ height: "200px" }}
+			style={{ height: "220px" }}
 		>
 			<div className="flex animate-marquee space-x-6 items-stretch h-full">
 				{news.map((item, i) => (
@@ -46,15 +55,15 @@ export default function NewsBar() {
 								src={item.image_url}
 								alt={item.title}
 								width={180}
-								height={100}
+								height={120}
 								className="object-cover"
 							/>
 						) : (
-							<div className="w-full h-[100px] bg-gray-300 dark:bg-gray-700 flex items-center justify-center">
+							<div className="w-full h-[120px] bg-gray-300 dark:bg-gray-700 flex items-center justify-center">
 								<span className="text-gray-500">No Image</span>
 							</div>
 						)}
-						<div className="p-2">
+						<div className="p-2 flex-1">
 							<p className="text-sm font-medium text-gray-800 dark:text-gray-200 line-clamp-2">
 								{item.title}
 							</p>
