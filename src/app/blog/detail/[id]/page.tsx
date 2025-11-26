@@ -1,4 +1,4 @@
-import { Post } from "../types/Post";
+import { Post } from "../../types/Post";
 
 export default async function BlogDetail({ params }: any) {
 	const res = await fetch(
