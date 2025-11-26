@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Post } from "./types/Post";
 import BlogList from "./components/BlogList";
-import DashboardSidebar from "./components/DashboardSidebar";
+import Link from "next/link";
 
 export default function BlogPage() {
 	const [posts, setPosts] = useState<Post[]>([]);
@@ -11,13 +11,11 @@ export default function BlogPage() {
 	const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 	useEffect(() => {
-		const t = localStorage.getItem("token");
-		setToken(t);
+		setToken(localStorage.getItem("token"));
 
 		const fetchPosts = async () => {
 			try {
 				const res = await fetch(`${BASE_URL}/Blog/list/`);
-				if (!res.ok) throw new Error("Failed to fetch posts");
 				const data: Post[] = await res.json();
 				setPosts(data);
 			} catch (err) {
@@ -28,15 +26,21 @@ export default function BlogPage() {
 	}, []);
 
 	return (
-		<div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6">
-			{token && (
-				<div className="md:col-span-1">
-					<DashboardSidebar token={token} />
-				</div>
-			)}
-			<div className={token ? "md:col-span-2" : "md:col-span-3"}>
-				<BlogList posts={posts} />
+		<div className="p-8 max-w-5xl mx-auto space-y-6">
+			<div className="flex justify-between items-center">
+				<h1 className="text-3xl font-bold">Blog</h1>
+
+				{token && (
+					<Link
+						href="/blog/create"
+						className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+					>
+						Create New Post
+					</Link>
+				)}
 			</div>
+
+			<BlogList posts={posts} />
 		</div>
 	);
 }
