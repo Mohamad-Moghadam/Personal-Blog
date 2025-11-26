@@ -173,7 +173,7 @@ export default function Home() {
 								display: flex;
 								align-items: center;
 								height: 100%;
-								animation: marquee 180s linear infinite;
+								animation: marquee 45s linear infinite;
 							}
 							@media (max-width: 768px) {
 								.animate-marquee {

@@ -71,12 +71,12 @@ export default function NewsBar() {
 					display: flex;
 					align-items: center;
 					height: 100%;
-					animation: marquee 420s linear infinite;
+					animation: marquee 45s linear infinite;
 				}
 
 				@media (max-width: 768px) {
 					.animate-marquee {
-						animation: marquee 500s linear infinite;
+						animation: marquee 45s linear infinite;
 					}
 				}
 			`}</style>
