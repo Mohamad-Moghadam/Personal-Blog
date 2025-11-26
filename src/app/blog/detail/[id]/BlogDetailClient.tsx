@@ -41,19 +41,18 @@ export default function BlogDetailClient({ postId }: { postId: string }) {
 	if (!post) return <p className="p-6 text-red-500">Post not found.</p>;
 
 	return (
-		<div className="max-w-3xl mx-auto p-6 space-y-4">
-			<h1 className="text-4xl font-bold">{post.title}</h1>
+		<div className="max-w-3xl mx-auto p-6 space-y-6 bg-white shadow-md rounded-xl">
+			<h1 className="text-4xl font-extrabold text-gray-900">{post.title}</h1>
 
-			<p className="text-gray-500">
-				Posted on {new Date(post.created_at).toLocaleDateString()} • Status:{" "}
-				{post.status}
-			</p>
-
-			<p className="text-lg leading-relaxed">{post.content}</p>
-
-			<div className="text-sm text-gray-600">
-				Author ID: {post.author ?? "Unknown"}
+			<div className="flex flex-wrap gap-3 text-sm text-gray-500">
+				<span>Posted: {new Date(post.created_at).toLocaleDateString()}</span>
+				<span className="capitalize">Status: {post.status}</span>
+				<span>Author: {post.author ?? "Unknown"}</span>
 			</div>
+
+			<p className="text-gray-700 text-lg leading-relaxed whitespace-pre-line">
+				{post.content}
+			</p>
 		</div>
 	);
 }
