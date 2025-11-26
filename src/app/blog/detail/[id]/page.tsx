@@ -1,10 +1,10 @@
-import { Post } from "../../types/Post";
+import { Post } from "@/app/blog/types/Post";
 
-interface Props {
+interface PageProps {
 	params: { id: string };
 }
 
-export default async function BlogDetail({ params }: Props) {
+export default async function BlogDetail({ params }: PageProps) {
 	const res = await fetch(
 		`${process.env.NEXT_PUBLIC_BASE_URL}/Blog/detail/${params.id}/`
 	);
