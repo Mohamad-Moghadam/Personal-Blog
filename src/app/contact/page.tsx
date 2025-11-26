@@ -126,26 +126,34 @@ export default function ContactPage() {
 					<h2 className="text-2xl font-semibold">Other platforms</h2>
 					<div className="flex justify-center space-x-6 rtl:space-x-reverse">
 						<a
-							href="https://instagram.com/username"
+							href="https://t.me/Moe_moghadam"
 							target="_blank"
 							rel="noopener noreferrer"
-							className="text-pink-500 hover:text-pink-700 transition"
+							className="text-blue-500 hover:text-blue-700 transition"
 						>
-							Instagram
+							Telegram
 						</a>
 						<a
-							href="mailto:you@example.com"
+							href="mailto:m.reza.s.moghadam@gmail.com"
 							className="text-green-500 hover:text-green-700 transition"
 						>
 							Email
 						</a>
 						<a
-							href="https://github.com/username"
+							href="https://github.com/Mohamad-Moghadam"
 							target="_blank"
 							rel="noopener noreferrer"
 							className="text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white transition"
 						>
 							GitHub
+						</a>
+						<a
+							href="https://www.linkedin.com/in/mohamad-reza-soodmand-moghadam-1687b5349/"
+							target="_blank"
+							rel="noopener noreferrer"
+							className="text-blue-700 hover:text-blue-900 transition"
+						>
+							LinkedIn
 						</a>
 					</div>
 				</section>
