@@ -1,53 +1,122 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import Navbar from "@/app/components/Navbar";
-import { Toaster } from "react-hot-toast";
+"use client";
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
-const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
-const geistMono = Geist_Mono({
-	variable: "--font-geist-mono",
-	subsets: ["latin"],
-});
+export default function Navbar() {
+	const [isOpen, setIsOpen] = useState(false);
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const router = useRouter();
+	const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
-export const metadata: Metadata = {
-	title: "My Blog",
-	description: "A personal blog built with Next.js",
-};
+	const links = [
+		{ name: "Home", href: "/" },
+		{ name: "About Me", href: "/about" },
+		{ name: "Blog", href: "/blog" },
+		{ name: "Contact Me", href: "/contact" },
+	];
 
-export default function RootLayout({
-	children,
-}: {
-	children: React.ReactNode;
-}) {
+	useEffect(() => {
+		const token = localStorage.getItem("token");
+		setIsLoggedIn(!!token);
+	}, []);
+
+	const logoutHandler = async () => {
+		try {
+			const token = localStorage.getItem("token");
+
+			await fetch(`${BASE_URL}/Subscribers/signout/`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+			});
+
+			localStorage.removeItem("token");
+			setIsLoggedIn(false);
+			toast.success("Logged out");
+
+			setTimeout(() => router.push("/"), 400);
+		} catch {
+			localStorage.removeItem("token");
+			setIsLoggedIn(false);
+			toast.error("Error, but logged out.");
+		}
+	};
+
 	return (
-		<html lang="en">
-			<body
-				className={`${geistSans.variable} ${geistMono.variable} antialiased bg-zinc-50 dark:bg-black`}
-			>
-				<Navbar />
-				<main className="min-h-screen">{children}</main>
-				<footer className="bg-gray-800 text-white p-4 text-center mt-10">
-					<p>© 2025 My Blog. All rights reserved.</p>
-					<div className="mt-2 space-x-4">
-						<a
-							href="https://instagram.com/username"
-							target="_blank"
-							rel="noopener noreferrer"
-							className="hover:text-yellow-400 transition-colors"
+		<nav className="bg-gray-800 text-white p-4">
+			<div className="max-w-7xl mx-auto flex justify-between items-center">
+				<div className="text-xl font-bold">My Blog</div>
+
+				<div className="md:hidden">
+					<button
+						onClick={() => setIsOpen(!isOpen)}
+						className="focus:outline-none"
+					>
+						<svg
+							className="w-6 h-6"
+							fill="none"
+							stroke="currentColor"
+							viewBox="0 0 24 24"
 						>
-							Instagram
-						</a>
-						<a
-							href="/about"
-							className="hover:text-yellow-400 transition-colors"
+							{isOpen ? (
+								<path
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									strokeWidth={2}
+									d="M6 18L18 6M6 6l12 12"
+								/>
+							) : (
+								<path
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									strokeWidth={2}
+									d="M4 6h16M4 12h16M4 18h16"
+								/>
+							)}
+						</svg>
+					</button>
+				</div>
+
+				<div
+					className={`flex-col md:flex md:flex-row md:space-x-8 absolute md:static bg-gray-800 w-full md:w-auto left-0 transition-all duration-300 ${
+						isOpen ? "top-16 flex" : "top-[-200px] hidden"
+					}`}
+				>
+					{links.map((link) => (
+						<Link
+							key={link.name}
+							href={link.href}
+							className="block px-4 py-2 hover:text-yellow-400"
+							onClick={() => setIsOpen(false)}
 						>
-							About
-						</a>
-					</div>
-				</footer>
-				<Toaster />
-			</body>
-		</html>
+							{link.name}
+						</Link>
+					))}
+
+					{!isLoggedIn && (
+						<Link
+							href="/login"
+							className="block px-4 py-2 hover:text-green-400"
+							onClick={() => setIsOpen(false)}
+						>
+							Login
+						</Link>
+					)}
+
+					{isLoggedIn && (
+						<button
+							onClick={logoutHandler}
+							className="block px-4 py-2 text-left hover:text-red-400"
+						>
+							Logout
+						</button>
+					)}
+				</div>
+			</div>
+		</nav>
 	);
 }
