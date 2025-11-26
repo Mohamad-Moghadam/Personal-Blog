@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 interface NewsItem {
 	title: string;
 	link: string;
+	image_url?: string;
 }
 
 export default function Home() {
@@ -128,17 +129,31 @@ export default function Home() {
 				)}
 
 				{isLoggedIn && news.length > 0 && (
-					<section className="bg-gray-200 dark:bg-gray-900 p-4 rounded-lg overflow-hidden relative">
-						<div className="whitespace-nowrap animate-marquee">
+					<section
+						className="bg-gray-200 dark:bg-gray-900 p-4 rounded-lg overflow-hidden relative"
+						style={{ height: "150px" }}
+					>
+						<div className="flex animate-marquee items-center space-x-6 h-full">
 							{news.map((n, i) => (
 								<a
 									key={i}
 									href={n.link}
 									target="_blank"
 									rel="noopener noreferrer"
-									className="inline-block mx-6 text-blue-600 dark:text-blue-400 font-medium hover:underline"
+									className="flex items-center space-x-4 min-w-max h-full"
 								>
-									{n.title}
+									{n.image_url && (
+										<Image
+											src={n.image_url}
+											alt={n.title}
+											width={60}
+											height={60}
+											className="rounded-md object-cover"
+										/>
+									)}
+									<span className="text-blue-600 dark:text-blue-400 font-medium hover:underline">
+										{n.title}
+									</span>
 								</a>
 							))}
 						</div>
@@ -152,8 +167,10 @@ export default function Home() {
 								}
 							}
 							.animate-marquee {
-								display: inline-block;
-								animation: marquee 30s linear infinite;
+								display: flex;
+								align-items: center;
+								height: 100%;
+								animation: marquee 180s linear infinite;
 							}
 						`}</style>
 					</section>
