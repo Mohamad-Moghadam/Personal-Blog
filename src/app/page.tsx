@@ -130,33 +130,36 @@ export default function Home() {
 
 				{isLoggedIn && news.length > 0 && (
 					<section
-						className="bg-gray-200 dark:bg-gray-900 p-4 rounded-lg overflow-hidden relative"
-						style={{ height: "150px" }}
+						className="w-full bg-gray-200 dark:bg-gray-900 p-4 rounded-lg overflow-hidden relative"
+						style={{ height: "160px" }}
 					>
-						<div className="flex animate-marquee items-center space-x-6 h-full">
-							{news.map((n, i) => (
+						<div className="flex animate-marquee items-center h-full space-x-6">
+							{news.map((item, idx) => (
 								<a
-									key={i}
-									href={n.link}
+									key={idx}
+									href={item.link}
 									target="_blank"
 									rel="noopener noreferrer"
-									className="flex items-center space-x-4 min-w-max h-full"
+									className="flex items-center space-x-4 min-w-max h-full transition-transform transform hover:scale-105"
 								>
-									{n.image_url && (
-										<Image
-											src={n.image_url}
-											alt={n.title}
-											width={60}
-											height={60}
-											className="rounded-md object-cover"
-										/>
+									{item.image_url && (
+										<div className="relative w-16 h-16 flex-shrink-0 rounded-md overflow-hidden">
+											<Image
+												src={item.image_url}
+												alt={item.title}
+												fill
+												style={{ objectFit: "cover" }}
+												priority
+											/>
+										</div>
 									)}
-									<span className="text-blue-600 dark:text-blue-400 font-medium hover:underline">
-										{n.title}
-									</span>
+									<p className="text-blue-600 dark:text-blue-400 font-medium whitespace-nowrap">
+										{item.title}
+									</p>
 								</a>
 							))}
 						</div>
+
 						<style jsx>{`
 							@keyframes marquee {
 								0% {
@@ -170,7 +173,12 @@ export default function Home() {
 								display: flex;
 								align-items: center;
 								height: 100%;
-								animation: marquee 45s linear infinite;
+								animation: marquee 180s linear infinite;
+							}
+							@media (max-width: 768px) {
+								.animate-marquee {
+									animation: marquee 220s linear infinite;
+								}
 							}
 						`}</style>
 					</section>
