@@ -4,6 +4,7 @@ export default async function NewsBar() {
 	interface NewsItem {
 		title: string;
 		link: string;
+		image?: string;
 	}
 
 	const news = await getNews();
@@ -11,14 +12,30 @@ export default async function NewsBar() {
 	if (news.length === 0) return null;
 
 	return (
-		<div className="overflow-hidden relative bg-gray-200 dark:bg-gray-900 p-4 rounded-lg">
-			<div className="whitespace-nowrap animate-marquee">
+		<div className="w-full overflow-hidden relative bg-gray-200 dark:bg-gray-900 p-6 rounded-lg">
+			<div className="flex animate-marquee space-x-8 items-center">
 				{news.map((n: NewsItem, i: number) => (
-					<a key={i} href={n.link} target="_blank" rel="noopener noreferrer">
-						{n.title}
+					<a
+						key={i}
+						href={n.link}
+						target="_blank"
+						rel="noopener noreferrer"
+						className="flex items-center space-x-4 min-w-max"
+					>
+						{n.image && (
+							<img
+								src={n.image}
+								alt={n.title}
+								className="h-16 w-16 object-cover rounded"
+							/>
+						)}
+						<span className="text-blue-600 dark:text-blue-400 font-medium hover:underline">
+							{n.title}
+						</span>
 					</a>
 				))}
 			</div>
+
 			<style jsx>{`
 				@keyframes marquee {
 					0% {
@@ -29,8 +46,13 @@ export default async function NewsBar() {
 					}
 				}
 				.animate-marquee {
-					display: inline-block;
-					animation: marquee 30s linear infinite;
+					display: flex;
+					animation: marquee 90s linear infinite;
+				}
+				@media (max-width: 768px) {
+					.animate-marquee {
+						animation: marquee 120s linear infinite;
+					}
 				}
 			`}</style>
 		</div>
