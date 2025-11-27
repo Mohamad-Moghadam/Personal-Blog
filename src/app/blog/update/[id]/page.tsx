@@ -1,9 +1,7 @@
+"use client";
+
 import UpdatePostClient from "./UpdatePostClient";
 
-interface Params {
-	id: string;
-}
-
-export default async function UpdatePostPage({ params }: { params: Params }) {
+export default function UpdatePostPage({ params }: { params: { id: string } }) {
 	return <UpdatePostClient postId={params.id} />;
 }
