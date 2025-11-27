@@ -4,9 +4,19 @@ import { Post } from "../types/Post";
 import Link from "next/link";
 
 export default function BlogList({ posts }: { posts: Post[] }) {
+	const publishedPosts = posts.filter((post) => post.status === "published");
+
+	if (publishedPosts.length === 0) {
+		return (
+			<p className="text-center text-gray-500 mt-6">
+				No blogs yet. Stay tuned!
+			</p>
+		);
+	}
+
 	return (
 		<div className="grid gap-6 md:grid-cols-2">
-			{posts.map((post) => (
+			{publishedPosts.map((post) => (
 				<Link
 					key={post.id}
 					href={`/blog/detail/${post.id}`}
