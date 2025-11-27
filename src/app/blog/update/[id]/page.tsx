@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import toast from "react-hot-toast";
 
 interface Post {
@@ -10,14 +10,9 @@ interface Post {
 	content: string;
 }
 
-interface Props {
-	params: {
-		id: string;
-	};
-}
-
-export default function UpdatePostPage({ params }: Props) {
-	const postId = params.id;
+export default function UpdatePostPage() {
+	const params = useParams(); // <-- Next.js 16 way to get dynamic route
+	const postId = params?.id; // optional chaining
 	const [post, setPost] = useState<Post | null>(null);
 	const [title, setTitle] = useState("");
 	const [content, setContent] = useState("");
@@ -25,6 +20,7 @@ export default function UpdatePostPage({ params }: Props) {
 	const router = useRouter();
 
 	useEffect(() => {
+		if (!postId) return; // wait until postId is available
 		const fetchPost = async () => {
 			const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 			try {
@@ -43,6 +39,8 @@ export default function UpdatePostPage({ params }: Props) {
 	}, [postId]);
 
 	const handleUpdate = async () => {
+		if (!postId) return;
+
 		const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 		const token =
 			typeof window !== "undefined" ? localStorage.getItem("token") : null;
