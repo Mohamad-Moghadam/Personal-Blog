@@ -43,26 +43,42 @@ export default function MyPostsPage() {
 		setUserPosts(userPosts.filter((post) => post.id !== id));
 	};
 
-	if (loading) return <p>Loading your posts...</p>;
-	if (!token) return <p>Please log in to see your posts.</p>;
-	if (userPosts.length === 0) return <p>You have no posts yet.</p>;
+	if (loading)
+		return (
+			<p className="p-6 text-center text-gray-300 animate-pulse">
+				Loading your posts…
+			</p>
+		);
+	if (!token)
+		return (
+			<p className="p-6 text-center text-red-400 font-semibold">
+				Please log in to see your posts.
+			</p>
+		);
+	if (userPosts.length === 0)
+		return (
+			<p className="p-6 text-center text-gray-400">You have no posts yet.</p>
+		);
 
 	return (
-		<div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+		<div className="min-h-screen bg-gray-900 py-12 px-4 sm:px-6 lg:px-8 text-white">
 			<div className="max-w-5xl w-full mx-auto">
-				<div className="mb-8 text-center">
-					<h1 className="text-4xl font-extrabold text-gray-900">My Posts</h1>
-					<p className="mt-2 text-gray-600">
+				<div className="mb-10 text-center">
+					<h1 className="text-4xl font-extrabold text-yellow-400">My Posts</h1>
+					<p className="mt-2 text-gray-300">
 						Manage and delete your blog posts directly from here.
 					</p>
 				</div>
 
-				<div className="bg-white shadow-md rounded-lg p-6">
-					<UserPosts
-						token={token}
-						userPosts={userPosts}
-						onDelete={handleDelete}
-					/>
+				<div className="space-y-6">
+					{userPosts.map((post) => (
+						<UserPosts
+							key={post.id}
+							token={token!}
+							userPosts={[post]}
+							onDelete={handleDelete}
+						/>
+					))}
 				</div>
 			</div>
 		</div>
