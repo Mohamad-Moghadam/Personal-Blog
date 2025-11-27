@@ -8,19 +8,21 @@ interface Post {
 	id: number;
 	title: string;
 	content: string;
+	status: "draft" | "published";
 }
 
 export default function UpdatePostPage() {
-	const params = useParams(); // <-- Next.js 16 way to get dynamic route
-	const postId = params?.id; // optional chaining
+	const params = useParams();
+	const postId = params?.id;
 	const [post, setPost] = useState<Post | null>(null);
 	const [title, setTitle] = useState("");
 	const [content, setContent] = useState("");
+	const [status, setStatus] = useState<"draft" | "published">("draft");
 	const [loading, setLoading] = useState(true);
 	const router = useRouter();
 
 	useEffect(() => {
-		if (!postId) return; // wait until postId is available
+		if (!postId) return;
 		const fetchPost = async () => {
 			const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 			try {
@@ -29,6 +31,7 @@ export default function UpdatePostPage() {
 				setPost(data);
 				setTitle(data.title);
 				setContent(data.content);
+				setStatus(data.status);
 			} catch {
 				toast.error("Failed to load post");
 			} finally {
@@ -52,7 +55,7 @@ export default function UpdatePostPage() {
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${token}`,
 				},
-				body: JSON.stringify({ title, content }),
+				body: JSON.stringify({ title, content, status }),
 			});
 
 			if (!res.ok) throw new Error("Update failed");
@@ -86,6 +89,18 @@ export default function UpdatePostPage() {
 					className="w-full p-3 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none h-60 resize-none"
 					placeholder="Post Content"
 				/>
+
+				<div>
+					<label className="block mb-1 font-medium text-white">Status</label>
+					<select
+						value={status}
+						onChange={(e) => setStatus(e.target.value as "draft" | "published")}
+						className="w-full p-3 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none"
+					>
+						<option value="draft">Draft</option>
+						<option value="published">Published</option>
+					</select>
+				</div>
 
 				<button
 					onClick={handleUpdate}
