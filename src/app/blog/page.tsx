@@ -3,13 +3,11 @@
 import { useEffect, useState } from "react";
 import { Post } from "./types/Post";
 import BlogList from "./components/BlogList";
-import UserPosts from "./components/UserPosts";
 import Link from "next/link";
 
 export default function BlogPage() {
 	const [posts, setPosts] = useState<Post[]>([]);
 	const [token, setToken] = useState<string | null>(null);
-	const [showUserPosts, setShowUserPosts] = useState(false);
 	const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 	useEffect(() => {
@@ -27,13 +25,6 @@ export default function BlogPage() {
 		fetchPosts();
 	}, []);
 
-	const handleDelete = (id: number) => {
-		setPosts(posts.filter((post) => post.id !== id));
-	};
-
-	const currentUserId = 1;
-	const userPosts = posts.filter((post) => post.authorId === currentUserId);
-
 	return (
 		<div className="flex flex-col min-h-screen p-8 max-w-5xl mx-auto">
 			<div className="flex justify-between items-center mb-6">
@@ -49,12 +40,12 @@ export default function BlogPage() {
 								Create New Post
 							</Link>
 
-							<button
-								onClick={() => setShowUserPosts((prev) => !prev)}
+							<Link
+								href="/blog/my-posts"
 								className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
 							>
-								{showUserPosts ? "Hide My Posts" : "Show My Posts"}
-							</button>
+								My Posts
+							</Link>
 						</>
 					) : (
 						<Link
@@ -68,14 +59,6 @@ export default function BlogPage() {
 			</div>
 
 			<div className="flex-1 space-y-6">
-				{showUserPosts && token && (
-					<UserPosts
-						token={token}
-						userPosts={userPosts}
-						onDelete={handleDelete}
-					/>
-				)}
-
 				<BlogList posts={posts} />
 			</div>
 		</div>

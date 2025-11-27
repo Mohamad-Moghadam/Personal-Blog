@@ -4,7 +4,7 @@ import { Post } from "../types/Post";
 import toast from "react-hot-toast";
 
 interface Props {
-	token: string;
+	token: string | null;
 	userPosts: Post[];
 	onDelete: (id: number) => void;
 }
