@@ -82,8 +82,8 @@ export default function Navbar() {
 				</div>
 
 				<div
-					className={`flex-col md:flex md:flex-row md:space-x-8 fixed md:static bg-gray-800 w-full md:w-auto left-0 transition-all duration-300 z-50 ${
-						isOpen ? "top-0 flex" : "top-[-200px] hidden"
+					className={`flex-col md:flex md:flex-row md:space-x-8 absolute md:static bg-gray-800 w-full md:w-auto left-0 transition-all duration-300 z-50 ${
+						isOpen ? "top-16 flex" : "top-[-200px] hidden"
 					}`}
 				>
 					{links.map((link) => (
