@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import VisitorCounter from "./components/VisitorCounter";
 
 interface NewsItem {
 	title: string;
@@ -60,6 +61,7 @@ export default function Home() {
 					height={350}
 					className="rounded-full object-cover shadow-lg"
 				/>
+				<VisitorCounter/>
 			</section>
 
 			<main className="max-w-3xl w-full md:w-2/3 space-y-8">
