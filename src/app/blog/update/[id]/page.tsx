@@ -10,12 +10,12 @@ interface Post {
 	content: string;
 }
 
-interface UpdatePostPageProps {
-	params: { id: string };
-}
-
-export default function UpdatePostPage({ params }: UpdatePostPageProps) {
-	const { id } = params; // dynamic id from URL
+export default function UpdatePostPage({
+	params,
+}: {
+	params: { id: string }; // destructure id from params
+}) {
+	const { id } = params;
 	const [post, setPost] = useState<Post | null>(null);
 	const [title, setTitle] = useState("");
 	const [content, setContent] = useState("");
@@ -57,7 +57,7 @@ export default function UpdatePostPage({ params }: UpdatePostPageProps) {
 			if (!res.ok) throw new Error("Update failed");
 
 			toast.success("Post updated!");
-			router.push("/blog/my-posts"); // Redirect back to My Posts
+			router.push("/blog/my-posts");
 		} catch {
 			toast.error("Failed to update post");
 		}
