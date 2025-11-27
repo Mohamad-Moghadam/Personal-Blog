@@ -66,10 +66,12 @@ export default function Home() {
 				<section className="bg-blue-100 dark:bg-blue-900 p-6 rounded-lg">
 					<h1 className="text-3xl font-bold mb-2">Welcome to My Blog!</h1>
 					<p className="text-gray-800 dark:text-gray-200">
-						Hey there! I’m Mohammad Reza — a developer who loves learning new
-						things. This is where I write about my journey — from backend to
-						frontend, from ideas to mistakes. If you’re into real learning (and
-						a few hiccups along the way), welcome aboard!
+						Hello World! I’m Mohammad Reza. I build things, I automate things,
+						and I learn something new every day. from coding to DevOps. Here,
+						you’ll find my journey: the wins, the slip-ups, and the discoveries.
+						And this space isn’t just mine — you can share your thoughts and
+						stories too. If you’re into learning, creating, and leveling up,
+						welcome aboard. Let’s write the next chapter together.
 					</p>
 				</section>
 
@@ -102,14 +104,15 @@ export default function Home() {
 				<section>
 					<h2 className="text-2xl font-bold mb-2">Short Intro</h2>
 					<p className="text-gray-700 dark:text-gray-300">
-						I’m Mohammad Reza — a backend developer on a full-stack journey.
-						After teaching English for a while, I decided to dive deeper into
-						the world of code — from APIs and databases to frontend and
-						deployment. This blog is where I share what I learn, what I build,
-						and sometimes what completely breaks along the way 😅 I believe
-						learning should be fun, honest, and shared — so if you’re curious
-						about tech, growth, and the messy process of figuring things out,
-						you’re in the right place.
+						A backend developer on a full-stack adventure, after an unexpected
+						plot twist where I used to teach English. Now I’m diving into code,
+						APIs, databases, frontend, deployment… and yes, the occasional
+						mini-disaster. Here's where I share what I learn, what I
+						build, and what sometimes goes wrong in the way.
+						Learning should be fun, honest, and shared, which is why this isn’t
+						just my space. If you’re into tech, growth, or posting your own
+						experiments and chaos, you’re in the right place. Let’s learn (and
+						laugh) together.
 					</p>
 				</section>
 
