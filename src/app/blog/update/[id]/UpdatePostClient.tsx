@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
@@ -16,12 +16,10 @@ export default function UpdatePostClient({ postId }: { postId: string }) {
 	const [content, setContent] = useState("");
 	const [loading, setLoading] = useState(true);
 	const router = useRouter();
-	const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-	const token =
-		typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
 	useEffect(() => {
 		const fetchPost = async () => {
+			const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 			try {
 				const res = await fetch(`${BASE_URL}/Blog/detail/${postId}/`);
 				const data = await res.json();
@@ -35,9 +33,13 @@ export default function UpdatePostClient({ postId }: { postId: string }) {
 			}
 		};
 		fetchPost();
-	}, [postId, BASE_URL]);
+	}, [postId]);
 
 	const handleUpdate = async () => {
+		const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+		const token =
+			typeof window !== "undefined" ? localStorage.getItem("token") : null;
+
 		try {
 			const res = await fetch(`${BASE_URL}/Blog/update/${postId}/`, {
 				method: "PUT",
