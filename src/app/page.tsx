@@ -52,16 +52,16 @@ export default function Home() {
 	];
 
 	return (
-		<div className="flex flex-col md:flex-row min-h-screen items-start justify-center bg-zinc-50 dark:bg-black font-sans p-8 md:space-x-12">
-			<section className="flex-shrink-0 mb-6 md:mb-0 md:w-1/3 flex justify-center">
+		<div className="flex flex-col md:flex-row min-h-screen items-start justify-center bg-zinc-50 dark:bg-black font-sans p-4 md:p-8 md:space-x-12">
+			<section className="flex flex-col items-center mb-6 md:mb-0 md:w-1/3">
 				<Image
 					src="/1000109885.jpg"
 					alt="Profile Image"
-					width={350}
-					height={350}
+					width={250}
+					height={250}
 					className="rounded-full object-cover shadow-lg"
 				/>
-				<VisitorCounter/>
+				<VisitorCounter />
 			</section>
 
 			<main className="max-w-3xl w-full md:w-2/3 space-y-8">
@@ -109,12 +109,11 @@ export default function Home() {
 						A backend developer on a full-stack adventure, after an unexpected
 						plot twist where I used to teach English. Now I’m diving into code,
 						APIs, databases, frontend, deployment… and yes, the occasional
-						mini-disaster. Here's where I share what I learn, what I
-						build, and what sometimes goes wrong in the way.
-						Learning should be fun, honest, and shared, which is why this isn’t
-						just my space. If you’re into tech, growth, or posting your own
-						experiments and chaos, you’re in the right place. Let’s learn (and
-						laugh) together.
+						mini-disaster. Here's where I share what I learn, what I build, and
+						what sometimes goes wrong in the way. Learning should be fun,
+						honest, and shared, which is why this isn’t just my space. If you’re
+						into tech, growth, or posting your own experiments and chaos, you’re
+						in the right place. Let’s learn (and laugh) together.
 					</p>
 				</section>
 
