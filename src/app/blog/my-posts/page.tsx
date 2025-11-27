@@ -48,9 +48,23 @@ export default function MyPostsPage() {
 	if (userPosts.length === 0) return <p>You have no posts yet.</p>;
 
 	return (
-		<div className="flex flex-col min-h-screen p-8 max-w-5xl mx-auto">
-			<h1 className="text-3xl font-bold mb-6">My Posts</h1>
-			<UserPosts token={token} userPosts={userPosts} onDelete={handleDelete} />
+		<div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+			<div className="max-w-5xl w-full mx-auto">
+				<div className="mb-8 text-center">
+					<h1 className="text-4xl font-extrabold text-gray-900">My Posts</h1>
+					<p className="mt-2 text-gray-600">
+						Manage and delete your blog posts directly from here.
+					</p>
+				</div>
+
+				<div className="bg-white shadow-md rounded-lg p-6">
+					<UserPosts
+						token={token}
+						userPosts={userPosts}
+						onDelete={handleDelete}
+					/>
+				</div>
+			</div>
 		</div>
 	);
 }
