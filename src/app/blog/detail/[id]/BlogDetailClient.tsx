@@ -20,11 +20,8 @@ export default function BlogDetailClient({ postId }: { postId: string }) {
 		const loadPost = async () => {
 			try {
 				const url = `${process.env.NEXT_PUBLIC_BASE_URL}/Blog/detail/${postId}/`;
-				console.log("Fetching:", url);
-
 				const res = await fetch(url);
 				const data = await res.json();
-
 				setPost(data);
 			} catch (error) {
 				console.error("Error fetching:", error);
@@ -37,20 +34,38 @@ export default function BlogDetailClient({ postId }: { postId: string }) {
 		loadPost();
 	}, [postId]);
 
-	if (loading) return <p className="p-6">Loading…</p>;
-	if (!post) return <p className="p-6 text-red-500">Post not found.</p>;
+	if (loading)
+		return (
+			<p className="p-6 text-center text-gray-300 animate-pulse">Loading…</p>
+		);
+
+	if (!post)
+		return (
+			<p className="p-6 text-center text-red-500 font-semibold">
+				Post not found.
+			</p>
+		);
 
 	return (
-		<div className="max-w-3xl mx-auto p-6 space-y-6 bg-white shadow-md rounded-xl">
-			<h1 className="text-4xl font-extrabold text-gray-900">{post.title}</h1>
+		<div className="max-w-3xl mx-auto p-6 mt-8 bg-gray-900 text-white rounded-2xl shadow-lg transition-transform hover:scale-[1.01]">
+			<h1 className="text-4xl font-extrabold text-yellow-400 mb-4">
+				{post.title}
+			</h1>
 
-			<div className="flex flex-wrap gap-3 text-sm text-gray-500">
-				<span>Posted: {new Date(post.created_at).toLocaleDateString()}</span>
-				<span className="capitalize">Status: {post.status}</span>
-				<span>Author: {post.author ?? "Unknown"}</span>
+			<div className="flex flex-wrap gap-4 text-sm text-gray-400 mb-6">
+				<span>
+					<strong>Posted:</strong>{" "}
+					{new Date(post.created_at).toLocaleDateString()}
+				</span>
+				<span className="capitalize">
+					<strong>Status:</strong> {post.status}
+				</span>
+				<span>
+					<strong>Author:</strong> {post.author ?? "Unknown"}
+				</span>
 			</div>
 
-			<p className="text-gray-700 text-lg leading-relaxed whitespace-pre-line">
+			<p className="text-gray-200 text-lg leading-relaxed whitespace-pre-line">
 				{post.content}
 			</p>
 		</div>
