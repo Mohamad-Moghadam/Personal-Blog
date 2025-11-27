@@ -52,7 +52,7 @@ export default function Home() {
 	];
 
 	return (
-		<div className="flex flex-col md:flex-row min-h-screen justify-start md:justify-center items-center md:items-start">
+		<div className="flex flex-col md:flex-row min-h-screen justify-start md:justify-center items-center md:items-start px-4 md:px-8 py-12">
 			<section className="flex flex-col items-center w-full mb-6 md:mb-0 md:w-1/3">
 				<div className="relative w-40 h-40 sm:w-56 sm:h-56 md:w-64 md:h-64">
 					<Image
