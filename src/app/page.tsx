@@ -54,13 +54,14 @@ export default function Home() {
 	return (
 		<div className="flex flex-col md:flex-row min-h-screen items-start justify-center bg-zinc-50 dark:bg-black font-sans p-4 md:p-8 md:space-x-12">
 			<section className="flex flex-col items-center mb-6 md:mb-0 md:w-1/3">
-				<Image
-					src="/1000109885.jpg"
-					alt="Profile Image"
-					width={250}
-					height={250}
-					className="rounded-full object-cover shadow-lg"
-				/>
+				<div className="relative w-40 h-40 sm:w-56 sm:h-56 md:w-64 md:h-64">
+					<Image
+						src="/1000109885.jpg"
+						alt="Profile Image"
+						fill
+						className="rounded-full object-cover shadow-lg"
+					/>
+				</div>
 				<VisitorCounter />
 			</section>
 
