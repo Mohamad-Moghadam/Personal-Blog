@@ -8,7 +8,8 @@ export default function CreateBlogPage() {
 	const router = useRouter();
 	const [title, setTitle] = useState("");
 	const [content, setContent] = useState("");
-	const [status, setStatus] = useState("draft"); // default to draft
+	const [status, setStatus] = useState("draft");
+	const [image, setImage] = useState<File | null>(null);
 	const [loading, setLoading] = useState(false);
 	const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 	const token =
@@ -21,13 +22,20 @@ export default function CreateBlogPage() {
 		setLoading(true);
 
 		try {
+			const formData = new FormData();
+			formData.append("title", title);
+			formData.append("content", content);
+			formData.append("status", status);
+			if (image) {
+				formData.append("image", image);
+			}
+
 			const res = await fetch(`${BASE_URL}/Blog/create/`, {
 				method: "POST",
 				headers: {
 					Authorization: `Bearer ${token}`,
-					"Content-Type": "application/json",
 				},
-				body: JSON.stringify({ title, content, status }),
+				body: formData,
 			});
 
 			if (!res.ok) throw new Error("Failed to create post");
@@ -76,6 +84,18 @@ export default function CreateBlogPage() {
 							<option value="draft">Draft</option>
 							<option value="published">Published</option>
 						</select>
+					</div>
+
+					<div>
+						<label className="block mb-1 font-medium">Image</label>
+						<input
+							type="file"
+							accept="image/*"
+							onChange={(e) =>
+								setImage(e.target.files ? e.target.files[0] : null)
+							}
+							disabled={loading}
+						/>
 					</div>
 
 					<button
