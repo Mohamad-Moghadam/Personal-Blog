@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 export default function BlogList({ posts }: { posts: Post[] }) {
+	console.log("All posts from backend:", posts);
 	const publishedPosts = posts.filter((post) => post.status === "published");
 
 	if (publishedPosts.length === 0) {
