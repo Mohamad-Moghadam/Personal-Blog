@@ -5,4 +5,5 @@ export interface Post {
 	created_at: string;
 	authorId: number;
 	status: "draft" | "published";
+	image?: string;
 }
