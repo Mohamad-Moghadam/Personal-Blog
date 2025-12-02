@@ -35,6 +35,7 @@ export default function BlogList({ posts }: { posts: Post[] }) {
 							width={600}
 							height={300}
 							className="w-full h-48 object-cover rounded"
+							unoptimized
 						/>
 					)}
 					<p className="mt-3 text-gray-700">{post.content.slice(0, 120)}...</p>
