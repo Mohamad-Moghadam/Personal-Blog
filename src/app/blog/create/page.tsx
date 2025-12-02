@@ -42,7 +42,7 @@ export default function CreateBlogPage() {
 
 			toast.success("Post created!");
 			router.push("/blog");
-		} catch (err) {
+		} catch {
 			toast.error("Error creating post");
 		} finally {
 			setLoading(false);
@@ -95,6 +95,7 @@ export default function CreateBlogPage() {
 								setImage(e.target.files ? e.target.files[0] : null)
 							}
 							disabled={loading}
+							className="w-full p-2 border rounded"
 						/>
 					</div>
 
@@ -106,12 +107,6 @@ export default function CreateBlogPage() {
 					</button>
 				</form>
 			</div>
-
-			<footer className="bg-gray-100 dark:bg-gray-900 text-center p-4">
-				<p className="text-gray-700 dark:text-gray-300">
-					&copy; {new Date().getFullYear()} My Blog. All rights reserved.
-				</p>
-			</footer>
 		</div>
 	);
 }
