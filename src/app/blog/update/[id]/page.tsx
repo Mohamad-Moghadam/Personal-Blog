@@ -3,12 +3,14 @@
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import toast from "react-hot-toast";
+import Image from "next/image";
 
 interface Post {
 	id: number;
 	title: string;
 	content: string;
 	status: "draft" | "published";
+	image?: string;
 }
 
 export default function UpdatePostPage() {
@@ -18,6 +20,7 @@ export default function UpdatePostPage() {
 	const [title, setTitle] = useState("");
 	const [content, setContent] = useState("");
 	const [status, setStatus] = useState<"draft" | "published">("draft");
+	const [imageFile, setImageFile] = useState<File | null>(null);
 	const [loading, setLoading] = useState(true);
 	const router = useRouter();
 
@@ -28,6 +31,7 @@ export default function UpdatePostPage() {
 			try {
 				const res = await fetch(`${BASE_URL}/Blog/detail/${postId}/`);
 				const data = await res.json();
+
 				setPost(data);
 				setTitle(data.title);
 				setContent(data.content);
@@ -48,14 +52,22 @@ export default function UpdatePostPage() {
 		const token =
 			typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
+		const formData = new FormData();
+		formData.append("title", title);
+		formData.append("content", content);
+		formData.append("status", status);
+
+		if (imageFile) {
+			formData.append("image", imageFile);
+		}
+
 		try {
 			const res = await fetch(`${BASE_URL}/Blog/update/${postId}/`, {
 				method: "PUT",
 				headers: {
-					"Content-Type": "application/json",
 					Authorization: `Bearer ${token}`,
 				},
-				body: JSON.stringify({ title, content, status }),
+				body: formData,
 			});
 
 			if (!res.ok) throw new Error("Update failed");
@@ -100,6 +112,31 @@ export default function UpdatePostPage() {
 						<option value="draft">Draft</option>
 						<option value="published">Published</option>
 					</select>
+				</div>
+
+				{post.image && (
+					<div className="mt-3">
+						<p className="mb-2 text-gray-300">Current Image:</p>
+						<Image
+							src={post.image}
+							alt="Post Image"
+							width={500}
+							height={300}
+							className="rounded-lg object-cover"
+						/>
+					</div>
+				)}
+
+				<div className="mt-4">
+					<label className="block mb-2 text-gray-200">Change Image</label>
+					<input
+						type="file"
+						accept="image/*"
+						onChange={(e) => {
+							if (e.target.files) setImageFile(e.target.files[0]);
+						}}
+						className="w-full p-2 bg-gray-700 text-white border border-gray-600 rounded"
+					/>
 				</div>
 
 				<button
