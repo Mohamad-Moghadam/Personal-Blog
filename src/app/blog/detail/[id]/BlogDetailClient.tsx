@@ -11,7 +11,7 @@ interface Post {
 	status: string;
 	created_at: string;
 	updated_at: string;
-	image?: string; // فقط این رو اضافه کردم (optional)
+	image?: string;
 }
 
 export default function BlogDetailClient({ postId }: { postId: string }) {
@@ -21,15 +21,12 @@ export default function BlogDetailClient({ postId }: { postId: string }) {
 	useEffect(() => {
 		const loadPost = async () => {
 			try {
-				const url = `${process.env.NEXT_PUBLIC_BASE_URL}/Blog/detail/${postId}/`;
-				const res = await fetch(url);
+				const res = await fetch(
+					`${process.env.NEXT_PUBLIC_BASE_URL}/Blog/detail/${postId}/`
+				);
 				const data = await res.json();
-
-				console.log("Fetched detail post:", data); // برای تست
-
 				setPost(data);
-			} catch (error) {
-				console.error("Error fetching:", error);
+			} catch {
 				setPost(null);
 			} finally {
 				setLoading(false);
@@ -52,12 +49,11 @@ export default function BlogDetailClient({ postId }: { postId: string }) {
 		);
 
 	return (
-		<div className="max-w-3xl mx-auto p-6 mt-8 bg-gray-900 text-white rounded-2xl shadow-lg transition-transform hover:scale-[1.01]">
+		<div className="max-w-3xl mx-auto p-6 mt-8 bg-gray-900 text-white rounded-2xl shadow-lg">
 			<h1 className="text-4xl font-extrabold text-yellow-400 mb-4">
 				{post.title}
 			</h1>
 
-			{/* ✔ فقط این بخش جدید برای عکس */}
 			{post.image && (
 				<div className="mb-6">
 					<Image
