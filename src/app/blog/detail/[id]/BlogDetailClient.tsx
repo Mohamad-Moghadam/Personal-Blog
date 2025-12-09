@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 interface Post {
 	id: number;
@@ -10,6 +11,7 @@ interface Post {
 	status: string;
 	created_at: string;
 	updated_at: string;
+	image?: string; // فقط این رو اضافه کردم (optional)
 }
 
 export default function BlogDetailClient({ postId }: { postId: string }) {
@@ -22,6 +24,9 @@ export default function BlogDetailClient({ postId }: { postId: string }) {
 				const url = `${process.env.NEXT_PUBLIC_BASE_URL}/Blog/detail/${postId}/`;
 				const res = await fetch(url);
 				const data = await res.json();
+
+				console.log("Fetched detail post:", data); // برای تست
+
 				setPost(data);
 			} catch (error) {
 				console.error("Error fetching:", error);
@@ -51,6 +56,19 @@ export default function BlogDetailClient({ postId }: { postId: string }) {
 			<h1 className="text-4xl font-extrabold text-yellow-400 mb-4">
 				{post.title}
 			</h1>
+
+			{/* ✔ فقط این بخش جدید برای عکس */}
+			{post.image && (
+				<div className="mb-6">
+					<Image
+						src={post.image}
+						alt={post.title}
+						width={900}
+						height={500}
+						className="rounded-xl object-cover w-full"
+					/>
+				</div>
+			)}
 
 			<div className="flex flex-wrap gap-4 text-sm text-gray-400 mb-6">
 				<span>
